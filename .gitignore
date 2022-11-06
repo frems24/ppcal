@@ -1,0 +1,12 @@
+# PyCharm
+.idea/
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+
+# Byte-compiled
+__pycache__/
+
