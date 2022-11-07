@@ -1,32 +1,24 @@
-from utils import devices
-from utils import fluid
-
-
-class Shape:
-    def __init__(self):
-        self.shape = ["Pipe25", "Pipe25"]
-        self.route = []
-
-    def make_route(self):
-        for desc in self.shape:
-            device = getattr(devices, desc)
-            self.route.append(device)
-        return self.route
+from utils.system import Shape
+from utils.fluids import Fluid
 
 
 class Solver:
-    def __init__(self):
-        self.fluid = None
+    def __init__(self, shape, fluid):
+        self.shape = shape
+        self.fluid = fluid
+        self.route = None
 
-    def entry_point(self):
-        self.fluid = fluid.Fluid()
+    def get_route(self):
+        self.route = self.shape.make_route()
 
     def run(self):
-        self.entry_point()
+        self.get_route()
         return self.fluid
 
 
 if __name__ == "__main__":
-    s = Solver()
+    sh = Shape()
+    fl = Fluid()
+    s = Solver(sh, fl)
     f = s.run()
     print(f"Pressure: {f.p} bara")

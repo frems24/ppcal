@@ -1,15 +1,26 @@
+import pytest
+
 from solver import Solver
-from solver import Shape
+from utils.system import Shape
+from utils.fluids import Fluid
 
 
-def test_pressure_is_1():
-    s = Solver()
-    fluid = s.run()
-    assert fluid.p == 1
-
-
-def test_route():
+@pytest.fixture(scope="function")
+def provide_solver_data():
     sh = Shape()
-    route = sh.make_route()
-    assert route[0].name == "Pipe DN25"
-    assert route[1].name == "Pipe DN25"
+    fl = Fluid()
+    s = Solver(sh, fl)
+    return s
+
+
+def test_solver_uses_fluid_object(provide_solver_data):
+    s = provide_solver_data
+    fluid = s.run()
+    assert fluid.name == "He"
+
+
+def test_solver_can_make_route_from_shape(provide_solver_data):
+    s = provide_solver_data
+    s.run()
+    assert s.route[0].name == "Pipe DN25"
+    assert s.route[1].name == "Pipe DN25"
