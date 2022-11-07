@@ -8,8 +8,8 @@ from utils.fluids import Fluid
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
-    sh = Scheme(scheme=["Pipe25", "Pipe25", "Pipe25"])
-    fl = Fluid(name="He", p=2.0)
+    sh = Scheme(scheme=["Pipe25", "Pipe50", "Pipe25"])
+    fl = Fluid(name="He", p=3.0)
     s = Solver(sh, fl)
     return s
 
@@ -24,7 +24,8 @@ def test_solver_can_make_route_from_shape(provide_solver_data):
     s = provide_solver_data
     s.run()
     assert s.route[0].name == "Pipe DN25"
-    assert s.route[1].name == "Pipe DN25"
+    assert s.route[1].name == "Pipe DN50"
+    assert s.route[2].name == "Pipe DN25"
 
 
 def test_solver_can_compute_route(provide_solver_data):

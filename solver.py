@@ -21,8 +21,8 @@ class Solver:
 
 
 if __name__ == "__main__":
-    sh = Scheme(scheme=["Pipe25", "Pipe25"])
-    fl = Fluid(name="He", p=2.0)
+    sh = Scheme(scheme=["Pipe25", "Pipe50", "Pipe25"])
+    fl = Fluid(name="He", p=3.0)
     s = Solver(sh, fl)
     f = s.run()
     print(f"Pressure: {f.p} bar(a)")

@@ -17,6 +17,16 @@ class Device:
 @dataclass
 class Pipe25(Device):
     name: str = "Pipe DN25"
+    dp: float = 1.0
+
+    def get_fluid_after(self):
+        self.fluid.p -= self.dp
+        return self.fluid
+
+
+@dataclass
+class Pipe50(Device):
+    name: str = "Pipe DN50"
     dp: float = 0.5
 
     def get_fluid_after(self):
