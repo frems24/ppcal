@@ -2,14 +2,14 @@ import math
 import pytest
 
 from solver import Solver
-from utils.system import Shape
+from utils.system import Scheme
 from utils.fluids import Fluid
 
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
-    sh = Shape(shape=["Pipe25", "Pipe25", "Pipe25"])
-    fl = Fluid(p=2.0, name="He")
+    sh = Scheme(scheme=["Pipe25", "Pipe25", "Pipe25"])
+    fl = Fluid(name="He", p=2.0)
     s = Solver(sh, fl)
     return s
 

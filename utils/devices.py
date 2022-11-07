@@ -5,6 +5,7 @@ from .fluids import Fluid
 
 @dataclass
 class Device:
+    """Device unit to put the system together."""
     fluid: Fluid
     name: str = ""
     dp: float = 0.0

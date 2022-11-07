@@ -1,13 +1,17 @@
-from utils import devices
+from typing import List
+
+from . import devices
 
 
-class Shape:
-    def __init__(self, shape):
-        self.shape = shape
+class Scheme:
+    """Scheme of the whole system."""
+    def __init__(self, scheme: List[str]):
+        self.scheme = scheme
         self.route = []
 
     def make_route(self):
-        for desc in self.shape:
-            device = getattr(devices, desc)
+        """Make a list of devices connected together in the system."""
+        for element in self.scheme:
+            device = getattr(devices, element)
             self.route.append(device)
         return self.route

@@ -3,5 +3,6 @@ from dataclasses import dataclass
 
 @dataclass
 class Fluid:
-    p: float
+    """Properties of working fluid in the system."""
     name: str
+    p: float
