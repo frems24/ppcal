@@ -9,10 +9,12 @@ class Solver:
         self.route = None
 
     def get_route(self):
-        self.route = self.shape.make_route()
+        return self.shape.make_route()
 
     def run(self):
-        self.get_route()
+        self.route = self.get_route()
+        for device in self.route:
+            self.fluid.p -= device().get_dp()
         return self.fluid
 
 
