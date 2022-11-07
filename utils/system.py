@@ -2,8 +2,8 @@ from utils import devices
 
 
 class Shape:
-    def __init__(self):
-        self.shape = ["Pipe25", "Pipe25"]
+    def __init__(self, shape):
+        self.shape = shape
         self.route = []
 
     def make_route(self):

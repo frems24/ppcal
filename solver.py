@@ -17,8 +17,8 @@ class Solver:
 
 
 if __name__ == "__main__":
-    sh = Shape()
-    fl = Fluid()
+    sh = Shape(shape=["Pipe25", "Pipe25"])
+    fl = Fluid(p=2.0, name="He")
     s = Solver(sh, fl)
     f = s.run()
     print(f"Pressure: {f.p} bara")

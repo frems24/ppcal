@@ -7,8 +7,8 @@ from utils.fluids import Fluid
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
-    sh = Shape()
-    fl = Fluid()
+    sh = Shape(shape=["Pipe25", "Pipe25"])
+    fl = Fluid(p=2.0, name="He")
     s = Solver(sh, fl)
     return s
 
