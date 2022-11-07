@@ -1,12 +1,15 @@
 from dataclasses import dataclass
 
+from .fluids import Fluid
+
 
 @dataclass
 class Device:
+    fluid: Fluid
     name: str = ""
     dp: float = 0.0
 
-    def get_dp(self):
+    def get_fluid_after(self):
         raise NotImplementedError
 
 
@@ -15,5 +18,6 @@ class Pipe25(Device):
     name: str = "Pipe DN25"
     dp: float = 0.5
 
-    def get_dp(self):
-        return self.dp
+    def get_fluid_after(self):
+        self.fluid.p -= self.dp
+        return self.fluid

@@ -14,7 +14,7 @@ class Solver:
     def run(self):
         self.route = self.get_route()
         for device in self.route:
-            self.fluid.p -= device().get_dp()
+            self.fluid = device(self.fluid).get_fluid_after()
         return self.fluid
 
 
@@ -23,4 +23,4 @@ if __name__ == "__main__":
     fl = Fluid(p=2.0, name="He")
     s = Solver(sh, fl)
     f = s.run()
-    print(f"Pressure: {f.p} bara")
+    print(f"Pressure: {f.p} bar(a)")
