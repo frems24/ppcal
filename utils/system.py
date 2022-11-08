@@ -15,8 +15,9 @@ class Scheme:
         filename = f"{self.scheme_name}.toml"
         with open(TOML_DIR / filename, mode="rb") as fp:
             scheme_conf = tomli.load(fp)
-        list_of_devices = scheme_conf['scheme']
+        list_of_devices = list(scheme_conf)
         for element in list_of_devices:
-            device = getattr(devices, element)
+            desc = scheme_conf[element]
+            device = getattr(devices, desc['name'])(length=desc['length'])
             self.route.append(device)
         return self.route
