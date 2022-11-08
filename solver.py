@@ -4,9 +4,10 @@ from utils.fluids import Fluid
 
 class Solver:
     """A class to calculating changes in fluid properties in the system."""
-    def __init__(self, scheme_name: str, fluid: Fluid):
+    def __init__(self, scheme_name: str, fluid_name: str):
         self.scheme_name = scheme_name
-        self.fluid = fluid
+        self.fluid_name = fluid_name
+        self.fluid = Fluid(fluid_name=fluid_name)
         self.route = None
 
     def get_route(self):
@@ -21,8 +22,8 @@ class Solver:
 
 
 if __name__ == "__main__":
-    fl = Fluid(name="He", p=3.0)
+    fl = Fluid(fluid_name="he_at_3bar")
     print(f"Pressure at start: {fl.p} bar(a)")
-    s = Solver(scheme_name="three_pipes", fluid=fl)
+    s = Solver(scheme_name="three_pipes", fluid_name="he_at_3bar")
     f = s.run()
     print(f"Pressure at end:   {f.p} bar(a)")

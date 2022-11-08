@@ -2,19 +2,19 @@ import math
 import pytest
 
 from solver import Solver
-from utils.fluids import Fluid
 
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
     scheme_name = "three_pipes"
-    fl = Fluid(name="He", p=3.0)
-    s = Solver(scheme_name, fl)
+    fluid_name = "he_at_3bar"
+    s = Solver(scheme_name, fluid_name)
     return s
 
 
 def test_solver_uses_fluid_object(provide_solver_data):
     s = provide_solver_data
+    assert s.fluid.p == 3.0
     fluid = s.run()
     assert fluid.name == "He"
 
