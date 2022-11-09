@@ -10,6 +10,7 @@ class Fluid:
     fluid_name: str
     p: float = field(init=False, default=None)
     temp: float = field(init=False, default=None)
+    m_flow: float = field(init=False, default=None)
 
     def __post_init__(self):
         filename = f"{self.fluid_name}.toml"
@@ -18,8 +19,12 @@ class Fluid:
         self.name = fl['name']
         self.p = fl['p']
         self.temp = fl['temp']
+        self.m_flow = fl['mass_flow']
+
+        self.update_fluid()
 
     def update_fluid(self):
         """Update fluid properties after p and T change in device."""
         self.p = self.p
         self.temp = self.temp
+        self.m_flow = self.m_flow

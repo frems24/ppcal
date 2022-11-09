@@ -18,6 +18,6 @@ class Scheme:
         list_of_devices = list(scheme_toml)
         for item in list_of_devices:
             description = scheme_toml[item]
-            device = getattr(devices, description['type'])(**description)
+            device = getattr(devices, description['device'])(**description)
             self.route.append(device)
         return self.route

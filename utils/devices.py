@@ -1,11 +1,15 @@
 from dataclasses import dataclass
+import tomli
+
+from settings import TOML_DIR
 
 
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    type: str = None
-    length: float = 0
+    device: str = None  # Exact name of subclass (Pipe, etc.)
+    type: str = None  # Exact name of type read from devices/*.toml
+    name: str = None  # Descriptive name
 
     def update_p(self, fluid):
         raise NotImplementedError
@@ -16,16 +20,17 @@ class Device:
 
 @dataclass
 class Pipe(Device):
-    name: str = None
-    dp: float = None
+    diameter: float = None
+    length: float = None
+    dp: float = None  # Temporary line
 
     def __post_init__(self):
-        if self.name == 'Pipe DN20':
-            self.dp = 1.0
-        elif self.name == 'Pipe DN50':
-            self.dp = 0.5
-        else:
-            raise ValueError("Unknown pipe type")
+        filename = TOML_DIR / "devices" / "pipes.toml"
+        with open(filename, "rb") as fp:
+            dev = tomli.load(fp)
+        self.name = dev[self.type]['name']
+        self.diameter = dev[self.type]['diameter']
+        self.dp = dev[self.type]['dp']  # Temporary line
 
     def update_p(self, fluid):
         fluid.p -= self.dp
