@@ -5,7 +5,10 @@ from dataclasses import dataclass
 class Device:
     """Device unit to put the system together."""
 
-    def get_fluid_after(self, fluid):
+    def update_p(self, fluid):
+        raise NotImplementedError
+
+    def update_temp(self, fluid):
         raise NotImplementedError
 
 
@@ -15,8 +18,11 @@ class Pipe20(Device):
     length: float = 0
     dp: float = 1.0
 
-    def get_fluid_after(self, fluid):
+    def update_p(self, fluid):
         fluid.p -= self.dp
+
+    def update_temp(self, fluid):
+        pass
 
 
 @dataclass
@@ -25,5 +31,8 @@ class Pipe50(Device):
     length: float = 0
     dp: float = 0.5
 
-    def get_fluid_after(self, fluid):
+    def update_p(self, fluid):
         fluid.p -= self.dp
+
+    def update_temp(self, fluid):
+        pass
