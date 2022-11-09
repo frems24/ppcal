@@ -8,8 +8,8 @@ from settings import TOML_DIR
 class Fluid:
     """Properties of working fluid in the system."""
     fluid_name: str
-    p: float = field(init=False, default=None, metadata={'unit': 'bar(a)'})
-    temp: float = field(init=False, default=None, metadata={'unit': 'K'})
+    p: float = field(init=False, default=None)
+    temp: float = field(init=False, default=None)
 
     def __post_init__(self):
         filename = f"{self.fluid_name}.toml"

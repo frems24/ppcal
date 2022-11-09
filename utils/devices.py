@@ -4,6 +4,8 @@ from dataclasses import dataclass
 @dataclass
 class Device:
     """Device unit to put the system together."""
+    type: str = ""
+    length: float = 0
 
     def update_p(self, fluid):
         raise NotImplementedError
@@ -15,7 +17,6 @@ class Device:
 @dataclass
 class Pipe20(Device):
     name: str = "Pipe DN20"
-    length: float = 0
     dp: float = 1.0
 
     def update_p(self, fluid):
@@ -28,7 +29,6 @@ class Pipe20(Device):
 @dataclass
 class Pipe50(Device):
     name: str = "Pipe DN50"
-    length: float = 0
     dp: float = 0.5
 
     def update_p(self, fluid):

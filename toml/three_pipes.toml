@@ -1,10 +1,10 @@
 # Scheme of devices
 [dev1]
-    name = "Pipe20"
+    type = "Pipe20"
     length = 20
 [dev2]
-    name = "Pipe50"
+    type = "Pipe50"
     length = 50
 [dev3]
-    name = "Pipe20"
+    type = "Pipe20"
     length = 10

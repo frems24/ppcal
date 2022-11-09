@@ -14,10 +14,10 @@ class Scheme:
         """Make a list of devices connected together in the system."""
         filename = f"{self.scheme_name}.toml"
         with open(TOML_DIR / filename, mode="rb") as fp:
-            scheme_conf = tomli.load(fp)
-        list_of_devices = list(scheme_conf)
-        for element in list_of_devices:
-            desc = scheme_conf[element]
-            device = getattr(devices, desc['name'])(length=desc['length'])
+            scheme_toml = tomli.load(fp)
+        list_of_devices = list(scheme_toml)
+        for item in list_of_devices:
+            description = scheme_toml[item]
+            device = getattr(devices, description['type'])(**description)
             self.route.append(device)
         return self.route
