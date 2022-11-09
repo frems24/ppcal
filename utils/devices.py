@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    type: str = ""
+    type: str = None
     length: float = 0
 
     def update_p(self, fluid):
@@ -15,21 +15,17 @@ class Device:
 
 
 @dataclass
-class Pipe20(Device):
-    name: str = "Pipe DN20"
-    dp: float = 1.0
+class Pipe(Device):
+    name: str = None
+    dp: float = None
 
-    def update_p(self, fluid):
-        fluid.p -= self.dp
-
-    def update_temp(self, fluid):
-        pass
-
-
-@dataclass
-class Pipe50(Device):
-    name: str = "Pipe DN50"
-    dp: float = 0.5
+    def __post_init__(self):
+        if self.name == 'Pipe DN20':
+            self.dp = 1.0
+        elif self.name == 'Pipe DN50':
+            self.dp = 0.5
+        else:
+            raise ValueError("Unknown pipe type")
 
     def update_p(self, fluid):
         fluid.p -= self.dp
