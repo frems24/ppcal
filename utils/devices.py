@@ -1,34 +1,39 @@
 from dataclasses import dataclass
+import tomli
 
-from .fluids import Fluid
+from settings import TOML_DIR
 
 
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    fluid: Fluid
-    name: str = ""
-    dp: float = 0.0
+    device: str = None  # Exact name of subclass (Pipe, etc.)
+    type: str = None  # Exact name of type read from devices/*.toml
+    name: str = None  # Descriptive name
 
-    def get_fluid_after(self):
+    def update_p(self, fluid):
+        raise NotImplementedError
+
+    def update_temp(self, fluid):
         raise NotImplementedError
 
 
 @dataclass
-class Pipe25(Device):
-    name: str = "Pipe DN25"
-    dp: float = 1.0
+class Pipe(Device):
+    diameter: float = None
+    length: float = None
+    dp: float = None  # Temporary line
 
-    def get_fluid_after(self):
-        self.fluid.p -= self.dp
-        return self.fluid
+    def __post_init__(self):
+        filename = TOML_DIR / "devices" / "pipes.toml"
+        with open(filename, "rb") as fp:
+            dev = tomli.load(fp)
+        self.name = dev[self.type]['name']
+        self.diameter = dev[self.type]['diameter']
+        self.dp = dev[self.type]['dp']  # Temporary line
 
+    def update_p(self, fluid):
+        fluid.p -= self.dp
 
-@dataclass
-class Pipe50(Device):
-    name: str = "Pipe DN50"
-    dp: float = 0.5
-
-    def get_fluid_after(self):
-        self.fluid.p -= self.dp
-        return self.fluid
+    def update_temp(self, fluid):
+        pass

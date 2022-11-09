@@ -1,0 +1,30 @@
+# Temporary values, required corrections
+[Pipe250]
+name = "Pipe DN250"
+diameter = 250  # mm
+
+[Pipe80]
+name = "Pipe DN80"
+diameter = 80  # mm
+
+[Pipe65]
+name = "Pipe DN65"
+diameter = 65  # mm
+
+[Pipe50]
+name = "Pipe DN50"
+diameter = 50  # mm
+dp = 0.5  # Temporary line
+
+[Pipe40]
+name = "Pipe DN40"
+diameter = 40  # mm
+
+[Pipe20]
+name = "Pipe DN20"
+diameter = 20  # mm
+dp = 1  # Temporary line
+
+[Pipe15]
+name = "Pipe DN15"
+diameter = 15  # mm
