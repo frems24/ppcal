@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from .fluids import Fluid
-
 
 @dataclass
 class Device:
@@ -19,7 +17,6 @@ class Pipe20(Device):
 
     def get_fluid_after(self, fluid):
         fluid.p -= self.dp
-        return fluid
 
 
 @dataclass
@@ -30,4 +27,3 @@ class Pipe50(Device):
 
     def get_fluid_after(self, fluid):
         fluid.p -= self.dp
-        return fluid

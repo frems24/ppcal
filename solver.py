@@ -17,7 +17,7 @@ class Solver:
         """Method to perform calculations and get fluid instance at the end of system."""
         self.route = self.get_route()
         for device in self.route:
-            self.fluid = device.get_fluid_after(self.fluid)
+            device.get_fluid_after(self.fluid)
         return self.fluid
 
 
