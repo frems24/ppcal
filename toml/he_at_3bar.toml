@@ -1,4 +1,0 @@
-name = "He"
-p = 3.0  # bar(a)
-temp = 4  # K
-mass_flow = 1  # kg/s

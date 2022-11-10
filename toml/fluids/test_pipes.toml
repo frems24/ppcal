@@ -1,0 +1,6 @@
+# Fluid file
+# Only for test
+name = "He"
+p = 3  # bar(a)
+temp = 4  # K
+mass_flow = 173  # g/s

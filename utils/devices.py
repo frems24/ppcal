@@ -22,7 +22,6 @@ class Device:
 class Pipe(Device):
     diameter: float = None
     length: float = None
-    dp: float = None  # Temporary line
 
     def __post_init__(self):
         filename = TOML_DIR / "devices" / "pipes.toml"
@@ -30,10 +29,9 @@ class Pipe(Device):
             dev = tomli.load(fp)
         self.name = dev[self.type]['name']
         self.diameter = dev[self.type]['diameter']
-        self.dp = dev[self.type]['dp']  # Temporary line
 
     def update_p(self, fluid):
-        fluid.p -= self.dp
+        pass
 
     def update_temp(self, fluid):
         pass
