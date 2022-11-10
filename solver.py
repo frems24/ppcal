@@ -20,6 +20,6 @@ class Solver:
 if __name__ == "__main__":
     fl = Fluid(fluid_name="he_at_3bar")
     print(f"Pressure at start: {fl.p} bar(a)")
-    s = Solver(scheme_name="three_pipes", fluid_name="he_at_3bar")
+    s = Solver(scheme_name="test_pipes", fluid_name="he_at_3bar")
     f = s.run()
     print(f"Pressure at end:   {f.p} bar(a)")

@@ -6,7 +6,7 @@ from solver import Solver
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
-    scheme_name = "three_pipes"
+    scheme_name = "test_pipes"
     fluid_name = "he_at_3bar"
     s = Solver(scheme_name, fluid_name)
     return s
