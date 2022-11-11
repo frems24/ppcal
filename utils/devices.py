@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import tomli
 
 from settings import TOML_DIR
+from . import equations as eq
 
 
 @dataclass
@@ -34,10 +35,10 @@ class Source(Device):
         fluid.m_flow = self.mass_flow
         fluid.update_fluid()
 
-    def update_p(self, fluid):
+    def update_p(self, fluid):     # Source doesn't updates pressure
         pass
 
-    def update_temp(self, fluid):
+    def update_temp(self, fluid):  # Source doesn't updates temperature
         pass
 
 
@@ -57,7 +58,8 @@ class Pipe(Device):
         fluid.update_fluid()
 
     def update_p(self, fluid):
-        pass
+        dp = eq.darcy_weisbach(self, fluid)
+        fluid.p -= dp
 
     def update_temp(self, fluid):
         pass

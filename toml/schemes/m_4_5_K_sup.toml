@@ -1,11 +1,10 @@
 # Scheme file
 # 4.5 K helium supply main line
 [dev0]
-device = "Source"
-entry = "root"  # Entry point name (eg. dev2)
-mass_flow = 173  # g/s   (fill in only when entry is "root"
-
+    device = "Source"
+    entry = "root"  # Entry point name (eg. dev2)
+    mass_flow = 0.173  # kg/s   (fill in only when entry is "root")
 [dev1]
-device = "Pipe"
-type = "Pipe50"
-length = 20  # m
+    device = "Pipe"
+    type = "Pipe50"
+    length = 20  # m

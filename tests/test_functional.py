@@ -5,8 +5,8 @@ from solver import Solver
 
 @pytest.fixture(scope="function")
 def provide_solver_data():
-    process_line = "m_4_5_K_sup"
-    s = Solver(process_line)
+    process_line_name = "m_4_5_K_sup"
+    s = Solver(process_line_name)
     return s
 
 
