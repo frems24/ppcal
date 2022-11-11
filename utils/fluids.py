@@ -8,9 +8,9 @@ from settings import TOML_DIR
 class Fluid:
     """Properties of working fluid in the system."""
     process_line: str
+    m_flow: float = 0.0
     p: float = field(init=False, default=None)
     temp: float = field(init=False, default=None)
-    m_flow: float = field(init=False, default=None)
 
     def __post_init__(self):
         filename = f"{self.process_line}.toml"
@@ -19,9 +19,6 @@ class Fluid:
         self.name = fl['name']
         self.p = fl['p']
         self.temp = fl['temp']
-        self.m_flow = fl['mass_flow']
-
-        self.update_fluid()
 
     def update_fluid(self):
         """Update fluid properties after p and T change in device."""
