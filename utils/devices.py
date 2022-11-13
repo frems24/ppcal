@@ -40,6 +40,7 @@ class Source(Device):
 
     def update_fluid(self, fluid):
         fluid.m_flow = self.mass_flow
+        fluid.dp = 0.0
         fluid.update_fluid()
 
 
@@ -58,8 +59,7 @@ class Pipe(Device):
         self.diameter = dev[self.type]['diameter']
 
     def update_p(self, fluid):
-        dp = eq.darcy_weisbach(self, fluid)
-        fluid.p -= dp
+        eq.darcy_weisbach(self, fluid)
 
     def update_temp(self, fluid):
         pass

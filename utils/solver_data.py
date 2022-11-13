@@ -15,7 +15,8 @@ def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
     row = dict()
     row['device'] = dev.name
     row['mass_stream'] = fl.m_flow
-    row['pressure'] = fl.p
+    row['pressure'] = round(fl.p, 6)
+    row['pressure_drop'] = round(fl.dp, 6)
     row['temperature'] = fl.temp
     row['density'] = fl.rho
     row['viscosity'] = fl.mi

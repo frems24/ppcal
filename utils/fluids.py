@@ -13,6 +13,7 @@ class Fluid:
     temp: float = field(init=False, default=None)    # Temperature, K
     rho: float = field(init=False, default=None)     # Density, kg / m3
     mi: float = field(init=False, default=None)      # Dynamic viscosity, Pa s
+    dp: float = field(init=False, default=None)      # Pressure drop in device, bar
 
     def __post_init__(self):
         filename = f"{self.process_line}.toml"

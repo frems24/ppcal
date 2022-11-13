@@ -21,7 +21,7 @@ diameter = 40  # mm
 
 [Pipe20]
 name = "Pipe DN20"
-diameter = 20  # mm
+diameter = 0.02  # m  poprawić
 
 [Pipe15]
 name = "Pipe DN15"
