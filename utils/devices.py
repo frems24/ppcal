@@ -12,13 +12,13 @@ class Device:
     type: str = None    # Exact name of type read from devices/*.toml
     name: str = None    # Descriptive name
 
-    def update_fluid(self, fluid):
-        raise NotImplementedError
-
     def update_p(self, fluid):
         raise NotImplementedError
 
     def update_temp(self, fluid):
+        raise NotImplementedError
+
+    def update_fluid(self, fluid):
         raise NotImplementedError
 
 
@@ -31,15 +31,15 @@ class Source(Device):
         if self.entry != "root":  # Very beginning of the whole system
             pass  # Tu wczytać mass flow z pozycji na schemacie
 
-    def update_fluid(self, fluid):
-        fluid.m_flow = self.mass_flow
-        fluid.update_fluid()
-
     def update_p(self, fluid):     # Source doesn't updates pressure
         pass
 
     def update_temp(self, fluid):  # Source doesn't updates temperature
         pass
+
+    def update_fluid(self, fluid):
+        fluid.m_flow = self.mass_flow
+        fluid.update_fluid()
 
 
 @dataclass
@@ -56,12 +56,12 @@ class Pipe(Device):
         self.name = dev[self.type]['name']
         self.diameter = dev[self.type]['diameter']
 
-    def update_fluid(self, fluid):
-        fluid.update_fluid()
-
     def update_p(self, fluid):
         dp = eq.darcy_weisbach(self, fluid)
         fluid.p -= dp
 
     def update_temp(self, fluid):
         pass
+
+    def update_fluid(self, fluid):
+        fluid.update_fluid()
