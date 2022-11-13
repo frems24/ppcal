@@ -1,0 +1,5 @@
+# Fluid file
+# 4.5 K helium supply main line
+name = "He"
+p = 2.9  # bar(a)
+temp = 4.5  # K

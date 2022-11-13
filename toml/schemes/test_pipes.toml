@@ -1,4 +1,8 @@
 # Scheme of devices
+[dev0]
+    device = "Source"
+    entry = "root"  # Entry point name (eg. dev2)
+    mass_flow = 1  # g/s   (fill in only when entry is "root"
 [dev1]
     device = "Pipe"
     type = "Pipe20"
