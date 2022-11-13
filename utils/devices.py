@@ -28,6 +28,7 @@ class Source(Device):
     mass_flow: float = None  # Mass stream entering the line, kg / s
 
     def __post_init__(self):
+        self.name = "Source"
         if self.entry != "root":  # Very beginning of the whole system
             pass  # Tu wczytać mass flow z pozycji na schemacie
 

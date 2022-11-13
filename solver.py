@@ -9,16 +9,18 @@ class Solver:
         self.process_name = process_name
         self.route = Scheme(process_line=process_name).make_route()
         self.fluid = Fluid(process_line=process_name)
-        self.data = dict()
+        self.data: list[dict] = []
 
     def run(self):
         """Method to perform calculations and get fluid instance at the end of system."""
+        if len(self.route) == 0:
+            raise RuntimeError(f"Empty scheme: '{self.process_name}'. Nothing to solve.")
         for device in self.route:
             device.update_p(self.fluid)
             device.update_temp(self.fluid)
             device.update_fluid(self.fluid)
-            save_data(self.data, device, self.fluid)
-        write_data(self.process_name, self.data)
+            write_data(self.data, device, self.fluid)
+        save_data(self.process_name, self.data)
         return self.fluid
 
 

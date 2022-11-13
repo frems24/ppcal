@@ -10,3 +10,5 @@
 # Byte-compiled
 __pycache__/
 
+# Result files
+results/

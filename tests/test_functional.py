@@ -1,8 +1,6 @@
-import csv
 import pytest
 
 from solver import Solver
-from utils import solver_data
 
 
 @pytest.fixture(scope="function")
@@ -17,10 +15,3 @@ def test_solver_can_compute_dp(provide_solver_data):
     start_p = s.fluid.p
     end_fluid = s.run()
     assert end_fluid.p < start_p
-
-
-def test_csv_file_contains_data(provide_solver_data):
-    s = provide_solver_data
-    data = solver_data.read_data(s.process_name)
-    assert "name" in data.keys()
-    assert data["name"] == "Pipe DN50"
