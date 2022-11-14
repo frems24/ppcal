@@ -26,8 +26,9 @@ def test_solver_can_make_route_from_shape(provide_solver_data):
     assert s.route[3].name == "Pipe DN20"
 
 
-def test_csv_file_contains_data(provide_solver_data):
+def test_csv_file_contains_data_with_units(provide_solver_data):
     s = provide_solver_data
     data = solver_data.read_data(s.process_name)
     assert "device" in data[0].keys()
-    assert data[1]["device"] == "Pipe DN20"
+    assert data[2]["device"] == "Pipe DN20"
+    assert data[0]["pressure"] == "bar(a)"

@@ -1,8 +1,9 @@
 import csv
+import tomli
 
 from .devices import Device
 from .fluids import Fluid
-from settings import RESULTS
+from settings import TOML_DIR, RESULTS
 
 
 def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
@@ -14,9 +15,9 @@ def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
     """
     row = dict()
     row['device'] = dev.name
-    row['mass_stream'] = fl.m_flow
+    row['mass_flow'] = fl.m_flow
     row['pressure'] = round(fl.p, 6)
-    row['pressure_drop'] = round(fl.dp, 6)
+    row['pressure_drop'] = round(fl.dp * 1_000, 3)
     row['temperature'] = fl.temp
     row['density'] = fl.rho
     row['viscosity'] = fl.mi
@@ -29,10 +30,16 @@ def save_data(process_name: str, data: list[dict]) -> None:
     :param process_name: Name of csv file
     :param data: Actual data to write in
     """
+    try:
+        with open(TOML_DIR / "units.toml", "rb") as fp:
+            units = tomli.load(fp)
+    except FileNotFoundError:
+        units = {}
     with open(RESULTS / f"{process_name}.csv", mode='w') as csv_file:
         fieldnames = data[0].keys()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
+        writer.writerow(units)
         writer.writerows(data)
 
 

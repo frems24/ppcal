@@ -1,0 +1,6 @@
+mass_flow = "kg/s"
+pressure = "bar(a)"
+pressure_drop = "mbar"
+temperature = "K"
+density = "kg/m3"
+viscosity = "Pa s"
