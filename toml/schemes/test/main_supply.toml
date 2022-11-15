@@ -11,8 +11,7 @@
     length = 2.424  # m
 [HWR]
     device = "Tee"
-    type = "T-connection"
-    m_outflow = 0.073  # kg/s
+    outflow = 0.0729  # kg/s
 [HWR-SSR1_1]
     device = "Pipe"
     type = "Pipe50"

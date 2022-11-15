@@ -14,8 +14,11 @@ def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
     :param fl: Actual Fluid instance
     """
     row = dict()
+    row['position'] = dev.position
     row['device'] = dev.name
-    row['mass_flow'] = fl.m_flow
+    row['length'] = dev.length
+    row['flow'] = round(fl.flow, 4)
+    row['outflow'] = round(dev.outflow, 4) if hasattr(dev, 'outflow') else 0
     row['pressure'] = round(fl.p, 6)
     row['pressure_drop'] = round(fl.dp * 1_000, 3)
     row['temperature'] = fl.temp
@@ -35,7 +38,11 @@ def save_data(process_name: str, data: list[dict]) -> None:
             units = tomli.load(fp)
     except FileNotFoundError:
         units = {}
-    with open(RESULTS / f"{process_name}.csv", mode='w') as csv_file:
+
+    file_path = RESULTS / f"{process_name}.csv"
+    base_dir = file_path.parent
+    base_dir.mkdir(parents=True, exist_ok=True)
+    with open(file_path, mode='w') as csv_file:
         fieldnames = data[0].keys()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()

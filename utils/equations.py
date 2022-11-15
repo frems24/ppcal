@@ -10,7 +10,7 @@ def darcy_weisbach(dev, fl) -> None:
     :param fl: Fluid class instance
     :return: Pressure drop, bar
     """
-    nominator = dzeta_pipe(dev, fl) * 8 * (fl.m_flow ** 2)
+    nominator = dzeta_pipe(dev, fl) * 8 * (fl.flow ** 2)
     denominator = (math.pi ** 2) * (dev.diameter ** 4) * fl.rho
     p_drop_pa = nominator / denominator  # Pa
     p_drop_bar = p_drop_pa / 100_000     # bar
@@ -39,6 +39,6 @@ def reynolds(dev, fl) -> float:
 def fluid_velocity(dev, fl) -> float:
     """Calculate the fluid velocity in the circular pipe, m / s."""
     denominator = math.pi * ((dev.diameter ** 2) / 4) * fl.rho
-    return fl.m_flow / denominator
+    return fl.flow / denominator
 
 # Other devices...

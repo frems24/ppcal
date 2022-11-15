@@ -13,6 +13,7 @@ class Device:
     device: str = None    # Exact name of subclass (Pipe, etc.)
     type: str = None      # Exact name of type read from devices/*.toml
     name: str = None      # Descriptive name
+    length: float = None  # Length of device (if applicable)
 
     def get_fluid(self):
         pass
@@ -41,6 +42,8 @@ class Source(Device):
             with open(TOML_DIR / "fluids" / filename, "rb") as fp:
                 fluid_description = tomli.load(fp)
             return Fluid(**fluid_description)
+        else:
+            raise NotImplementedError
 
     def update_p(self, fluid):     # Source doesn't updates pressure
         pass
@@ -55,7 +58,6 @@ class Source(Device):
 
 @dataclass
 class Pipe(Device):
-    length: float = None  # Pipe length, m
     diameter: float = field(init=False, default=None)  # Pipe inner diameter, m
     k: float = field(init=False, default=None)  # Pipe roughness, m
 
@@ -74,4 +76,22 @@ class Pipe(Device):
         pass
 
     def update_fluid(self, fluid):
+        fluid.update_fluid()
+
+
+@dataclass
+class Tee(Device):
+    outflow: float = None
+
+    def __post_init__(self):
+        self.name = "T-connection"
+
+    def update_p(self, fluid):
+        fluid.dp = 0
+
+    def update_temp(self, fluid):
+        pass
+
+    def update_fluid(self, fluid):
+        fluid.flow -= self.outflow
         fluid.update_fluid()

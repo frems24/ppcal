@@ -3,4 +3,4 @@
 name = "He"
 p = 2.9  # bar(a)
 temp = 4.5  # K
-m_flow = 0.173  # kg/s
+flow = 0.173  # kg/s
