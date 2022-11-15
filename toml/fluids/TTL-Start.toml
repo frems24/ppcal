@@ -1,5 +1,6 @@
 # Fluid file
-# 4.5 K helium supply main line
+# 4.5 K helium supply main line entry point at TTL Start
 name = "He"
 p = 2.9  # bar(a)
 temp = 4.5  # K
+m_flow = 0.173  # kg/s

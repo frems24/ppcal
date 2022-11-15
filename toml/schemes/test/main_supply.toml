@@ -3,9 +3,17 @@
 
 [START]  # Position
     device = "Source"
-    entry = "root"  # Entry position name
-    mass_flow = 0.173  # kg/s   (fill in only when entry is "root")
+    from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
+    entry = "TTL-Start"  # Entry position name
 [ITL-HWR]
+    device = "Pipe"
+    type = "Pipe50"
+    length = 2.424  # m
+[HWR]
+    device = "Tee"
+    type = "T-connection"
+    m_outflow = 0.073  # kg/s
+[HWR-SSR1_1]
     device = "Pipe"
     type = "Pipe50"
     length = 2.424  # m
