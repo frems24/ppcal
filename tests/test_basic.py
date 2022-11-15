@@ -1,7 +1,7 @@
 import pytest
 
 from solver import Solver
-from utils import solver_data
+from utils import data_io
 
 
 @pytest.fixture(scope="function")
@@ -15,7 +15,7 @@ def test_solver_uses_fluid_from_source(provide_solver_data):
     s = provide_solver_data
     fluid = s.run()
     assert s.fluid.p > 0
-    assert fluid.name == "He"
+    assert fluid.fluid_name == "He"
 
 
 def test_solver_can_make_route_from_shape(provide_solver_data):
@@ -29,7 +29,13 @@ def test_solver_can_make_route_from_shape(provide_solver_data):
 
 def test_csv_file_contains_data_with_units(provide_solver_data):
     s = provide_solver_data
-    data = solver_data.read_data(s.process_name)
+    data = data_io.read_data(s.process_name)
     assert "device" in data[0].keys()
     assert data[1]["device"] == "Source"
     assert data[0]["pressure"] == "bar(a)"
+
+
+def test_outflows(provide_solver_data):
+    s = provide_solver_data
+    s.run()
+    assert s.outflows['HWR']['outflow'] > 0

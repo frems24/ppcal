@@ -1,16 +1,13 @@
-import tomli
 from dataclasses import dataclass, field
-
-from settings import TOML_DIR
 
 
 @dataclass
 class Fluid:
     """Properties of working fluid in the system."""
-    name: str    # Fluid name
-    p: float     # Pressure, bar(a)
-    temp: float  # Temperature, K
-    flow: float  # Mass flow, kg / s
+    fluid_name: str  # Fluid name
+    p: float         # Pressure, bar(a)
+    temp: float      # Temperature, K
+    flow: float      # Mass flow, kg / s
     rho: float = field(init=False, default=None)     # Density, kg / m3
     mi: float = field(init=False, default=None)      # Dynamic viscosity, Pa s
     dp: float = field(init=False, default=None)      # Pressure drop in device, bar

@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
 import tomli
+import json
 
 from .fluids import Fluid
-from settings import TOML_DIR, PIPE_ROUGHNESS
+from settings import TOML_DIR, SCHEMES_DIR, PIPE_ROUGHNESS
 from . import equations as eq
 
 
@@ -37,13 +38,24 @@ class Source(Device):
         self.name = "Source"
 
     def get_fluid(self) -> Fluid:
-        if self.from_line == "root":  # Very beginning of the whole system
+        if self.from_line == "root":  # From very beginning of the whole system
             filename = f"{self.entry}.toml"
             with open(TOML_DIR / "fluids" / filename, "rb") as fp:
                 fluid_description = tomli.load(fp)
             return Fluid(**fluid_description)
-        else:
-            raise NotImplementedError
+        else:                         # From tee
+            try:
+                with open(SCHEMES_DIR / f"{self.from_line}.json", "r") as fp:
+                    line_description = json.load(fp)
+            except FileNotFoundError as desc:
+                raise FileNotFoundError("Origin line should be run first.")
+            entry_description = line_description[self.entry]
+            fluid_description = dict()
+            fluid_description['fluid_name'] = entry_description['fluid_name']
+            fluid_description['p'] = entry_description['pressure']
+            fluid_description['temp'] = entry_description['temperature']
+            fluid_description['flow'] = entry_description['outflow']
+            return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure
         pass

@@ -1,12 +1,13 @@
 import csv
 import tomli
+import json
 
-from .devices import Device
+from .devices import Device, Tee
 from .fluids import Fluid
-from settings import TOML_DIR, RESULTS
+from settings import TOML_DIR, RESULTS, SCHEMES_DIR
 
 
-def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
+def write_data_row(dev: Device, fl: Fluid) -> dict:
     """
     Write actual Device's and Fluid's parameters in data dictionary.
     :param data: List of dictionary items
@@ -24,7 +25,7 @@ def write_data(data: list[dict], dev: Device, fl: Fluid) -> None:
     row['temperature'] = fl.temp
     row['density'] = fl.rho
     row['viscosity'] = fl.mi
-    data.append(row)
+    return row
 
 
 def save_data(process_name: str, data: list[dict]) -> None:
@@ -48,6 +49,21 @@ def save_data(process_name: str, data: list[dict]) -> None:
         writer.writeheader()
         writer.writerow(units)
         writer.writerows(data)
+
+
+def write_outflow_data(dev: Tee, fl: Fluid) -> dict:
+    outflow_data = dict()
+    outflow_data['name'] = dev.name
+    outflow_data['fluid_name'] = fl.fluid_name
+    outflow_data['pressure'] = fl.p
+    outflow_data['temperature'] = fl.temp
+    outflow_data['outflow'] = dev.outflow
+    return outflow_data
+
+
+def save_outflows_scheme(process_name: str, outflows: dict) -> None:
+    with open(SCHEMES_DIR / f"{process_name}.json", 'w') as fp:
+        json.dump(outflows, fp)
 
 
 def read_data(process_name: str) -> list[dict]:

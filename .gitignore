@@ -10,5 +10,6 @@
 # Byte-compiled
 __pycache__/
 
-# Result files
+# Project files
 results/
+*.json
