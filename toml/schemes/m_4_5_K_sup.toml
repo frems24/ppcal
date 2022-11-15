@@ -1,10 +1,11 @@
 # Scheme file
 # 4.5 K helium supply main line
-[dev0]
+
+[START]  # Position
     device = "Source"
-    entry = "root"  # Entry point name (eg. dev2)
+    entry = "root"  # Entry position name
     mass_flow = 0.173  # kg/s   (fill in only when entry is "root")
-[dev1]
+[ITL-HWR]
     device = "Pipe"
     type = "Pipe50"
     length = 2.424  # m

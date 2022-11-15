@@ -8,9 +8,10 @@ from . import equations as eq
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    device: str = None  # Exact name of subclass (Pipe, etc.)
-    type: str = None    # Exact name of type read from devices/*.toml
-    name: str = None    # Descriptive name
+    position: str = None  # Position of device on system scheme
+    device: str = None    # Exact name of subclass (Pipe, etc.)
+    type: str = None      # Exact name of type read from devices/*.toml
+    name: str = None      # Descriptive name
 
     def update_p(self, fluid):
         raise NotImplementedError

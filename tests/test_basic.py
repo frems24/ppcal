@@ -21,7 +21,7 @@ def test_solver_uses_fluid_object(provide_solver_data):
 def test_solver_can_make_route_from_shape(provide_solver_data):
     s = provide_solver_data
     s.run()
-    assert s.route[0].position == "ITL-HWR"
+    assert s.route[0].position == "START"
     assert s.route[1].name == "Pipe DN20"
     assert s.route[2].name == "Pipe DN50"
     assert s.route[3].name == "Pipe DN20"

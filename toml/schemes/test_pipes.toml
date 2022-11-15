@@ -1,17 +1,18 @@
 # Scheme of devices
-[dev0]
+
+[START]  # Position
     device = "Source"
-    entry = "root"  # Entry point name (eg. dev2)
-    mass_flow = 0.1  # kg/s   (fill in only when entry is "root"
-[dev1]
+    entry = "root"  # Entry position name
+    mass_flow = 0.173  # kg/s   (fill in only when entry is "root")
+[ITL-HWR]
     device = "Pipe"
     type = "Pipe20"
     length = 20  # m
-[dev2]
+[HWR-SSR1-1]
     device = "Pipe"
     type = "Pipe50"
     length = 50  # m
-[dev3]
+[HWR-SSR1-2]
     device = "Pipe"
     type = "Pipe20"
     length = 10  # m

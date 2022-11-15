@@ -16,10 +16,11 @@ class Scheme:
         with open(TOML_DIR / "schemes" / filename, mode="rb") as fp:
             scheme_toml = tomli.load(fp)
 
-        list_of_devices = list(scheme_toml)
+        positions = list(scheme_toml)
 
-        for item in list_of_devices:
-            description = scheme_toml[item]
+        for position in positions:
+            description = scheme_toml[position]
+            description['position'] = position
             device = getattr(devices, description['device'])(**description)
             self.route.append(device)
 
