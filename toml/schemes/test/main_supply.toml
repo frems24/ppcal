@@ -1,4 +1,5 @@
-# Scheme of devices
+# Scheme file
+# 4.5 K helium supply main line
 
 [START]  # Position
     device = "Source"
@@ -6,13 +7,5 @@
     mass_flow = 0.173  # kg/s   (fill in only when entry is "root")
 [ITL-HWR]
     device = "Pipe"
-    type = "Pipe20"
-    length = 20  # m
-[HWR-SSR1-1]
-    device = "Pipe"
     type = "Pipe50"
-    length = 50  # m
-[HWR-SSR1-2]
-    device = "Pipe"
-    type = "Pipe20"
-    length = 10  # m
+    length = 2.424  # m
