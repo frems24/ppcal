@@ -1,20 +1,22 @@
 from dataclasses import dataclass, field
 import tomli
 import json
+from pathlib import Path
 
 from .fluids import Fluid
-from settings import TOML_DIR, SCHEMES_DIR, PIPE_ROUGHNESS
+from settings import TOML_DIR, PIPE_ROUGHNESS
 from . import equations as eq
 
 
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    position: str = None  # Position of device on system scheme
-    device: str = None    # Exact name of subclass (Pipe, etc.)
-    type: str = None      # Exact name of type read from devices/*.toml
-    name: str = None      # Descriptive name
-    length: float = None  # Length of device (if applicable)
+    line_filename: Path = None  # Scheme filename of process line
+    position: str = None        # Position of device on system scheme
+    device: str = None          # Exact name of subclass (Pipe, etc.)
+    type: str = None            # Exact name of type read from devices/*.toml
+    name: str = None            # Descriptive name
+    length: float = None        # Length of device (if applicable)
 
     def get_fluid(self):
         pass
@@ -45,16 +47,10 @@ class Source(Device):
             return Fluid(**fluid_description)
         else:                         # From tee
             try:
-                with open(SCHEMES_DIR / f"{self.from_line}.json", "r") as fp:
-                    line_description = json.load(fp)
-            except FileNotFoundError as desc:
+                with open(self.line_filename.parent / f"{self.from_line}.json", "r") as fp:
+                    fluid_description = json.load(fp)[self.entry]
+            except FileNotFoundError:
                 raise FileNotFoundError("Origin line should be run first.")
-            entry_description = line_description[self.entry]
-            fluid_description = dict()
-            fluid_description['fluid_name'] = entry_description['fluid_name']
-            fluid_description['p'] = entry_description['pressure']
-            fluid_description['temp'] = entry_description['temperature']
-            fluid_description['flow'] = entry_description['outflow']
             return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure

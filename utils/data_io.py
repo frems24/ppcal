@@ -10,7 +10,6 @@ from settings import TOML_DIR, RESULTS, SCHEMES_DIR
 def write_data_row(dev: Device, fl: Fluid) -> dict:
     """
     Write actual Device's and Fluid's parameters in data dictionary.
-    :param data: List of dictionary items
     :param dev: Actual Device instance
     :param fl: Actual Fluid instance
     """
@@ -53,11 +52,10 @@ def save_data(process_name: str, data: list[dict]) -> None:
 
 def write_outflow_data(dev: Tee, fl: Fluid) -> dict:
     outflow_data = dict()
-    outflow_data['name'] = dev.name
     outflow_data['fluid_name'] = fl.fluid_name
-    outflow_data['pressure'] = fl.p
-    outflow_data['temperature'] = fl.temp
-    outflow_data['outflow'] = dev.outflow
+    outflow_data['p'] = fl.p
+    outflow_data['temp'] = fl.temp
+    outflow_data['flow'] = dev.outflow
     return outflow_data
 
 
@@ -68,8 +66,8 @@ def save_outflows_scheme(process_name: str, outflows: dict) -> None:
 
 def read_data(process_name: str) -> list[dict]:
     """
-    Read data from csv file.
-    :param process_name:
+    Read data from csv file
+    :param process_name: Name of csv file
     :return: List of data dictionary rows
     """
     with open(RESULTS / f"{process_name}.csv", mode='r') as csv_file:

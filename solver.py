@@ -31,7 +31,8 @@ class Solver:
             self.data.append(write_data_row(device, self.fluid))
 
         save_data(self.process_name, self.data)
-        save_outflows_scheme(self.process_name, self.outflows)
+        if self.outflows:
+            save_outflows_scheme(self.process_name, self.outflows)
         return self.fluid
 
 

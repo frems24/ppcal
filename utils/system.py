@@ -12,14 +12,15 @@ class Scheme:
 
     def make_route(self):
         """Make a list of devices connected together in the system."""
-        filename = f"{self.process_line}.toml"
-        with open(SCHEMES_DIR / filename, mode="rb") as fp:
+        filename = SCHEMES_DIR / f"{self.process_line}.toml"
+        with open(filename, mode="rb") as fp:
             scheme_toml = tomli.load(fp)
 
         positions = list(scheme_toml)
 
         for position in positions:
             description = scheme_toml[position]
+            description['line_filename'] = filename
             description['position'] = position
             device = getattr(devices, description['device'])(**description)
             self.route.append(device)

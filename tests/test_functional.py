@@ -4,13 +4,13 @@ from solver import Solver
 
 
 @pytest.fixture(scope="function")
-def provide_solver_data():
+def provide_main_line():
     process_line_name = "test/main_supply"
     s = Solver(process_line_name)
     return s
 
 
-def test_solver_can_compute_dp(provide_solver_data):
-    s = provide_solver_data
+def test_solver_can_compute_dp(provide_main_line):
+    s = provide_main_line
     end_fluid = s.run()
     assert end_fluid.dp > 0
