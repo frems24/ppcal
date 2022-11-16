@@ -3,7 +3,7 @@ import math
 # Pipes
 
 
-def darcy_weisbach(dev, fl) -> None:
+def darcy_weisbach(dev, fl) -> float:
     """
     Calculate pressure drop with Darcy-Weisbach equation.
     :param dev: Device class instance
@@ -14,8 +14,7 @@ def darcy_weisbach(dev, fl) -> None:
     denominator = (math.pi ** 2) * (dev.diameter ** 4) * fl.rho
     p_drop_pa = nominator / denominator  # Pa
     p_drop_bar = p_drop_pa / 100_000     # bar
-    fl.dp = p_drop_bar
-    fl.p -= p_drop_bar
+    return p_drop_bar
 
 
 def dzeta_pipe(dev, fl) -> float:
@@ -41,4 +40,19 @@ def fluid_velocity(dev, fl) -> float:
     denominator = math.pi * ((dev.diameter ** 2) / 4) * fl.rho
     return fl.flow / denominator
 
-# Other devices...
+# Flexible hose
+
+# Elbow and T-joint
+
+
+def local_pressure_drop(dev, fl, mode: str) -> float:
+    dp = 0.5 * fl.rho * dzeta_local(dev, mode) * (fluid_velocity(dev, fl) ** 2)
+    return dp
+
+
+def dzeta_local(dev, mode: str) -> float:
+    return 0.1
+
+
+def ft(dev) -> float:
+    pass

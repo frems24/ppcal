@@ -12,6 +12,7 @@ def write_data_row(dev: Device, fl: Fluid) -> dict:
     Write actual Device's and Fluid's parameters in data dictionary.
     :param dev: Actual Device instance
     :param fl: Actual Fluid instance
+    :return: Results for a device
     """
     row = dict()
     row['position'] = dev.position

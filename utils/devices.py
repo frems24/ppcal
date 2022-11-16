@@ -78,7 +78,8 @@ class Pipe(Device):
         self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        eq.darcy_weisbach(self, fluid)
+        fluid.dp = eq.darcy_weisbach(self, fluid)
+        fluid.p -= fluid.dp
 
     def update_temp(self, fluid):
         pass
@@ -104,8 +105,11 @@ class Tee(Device):
         self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        fluid.dp = 0
-        self.outflow_p = fluid.p
+        initial_fluid_p = fluid.p
+        fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
+        fluid.p = initial_fluid_p - fluid.dp
+        outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
+        self.outflow_p = initial_fluid_p - outflow_dp
 
     def update_temp(self, fluid):
         self.outflow_temp = fluid.temp
