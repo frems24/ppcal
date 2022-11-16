@@ -1,28 +1,28 @@
 # Temporary values, required corrections
-[Pipe250]
+[DN250]
 name = "Pipe DN250"
 diameter = 250  # mm
 
-[Pipe80]
+[DN80]
 name = "Pipe DN80"
 diameter = 80  # mm
 
-[Pipe65]
+[DN65]
 name = "Pipe DN65"
 diameter = 65  # mm
 
-[Pipe50]
+[DN50]
 name = "Pipe DN50"
 diameter = 0.0545  # m
 
-[Pipe40]
+[DN40]
 name = "Pipe DN40"
 diameter = 40  # mm
 
-[Pipe20]
+[DN20]
 name = "Pipe DN20"
 diameter = 0.02  # m  poprawić
 
-[Pipe15]
+[DN15]
 name = "Pipe DN15"
 diameter = 15  # mm

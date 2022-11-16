@@ -26,7 +26,7 @@ def dzeta_pipe(dev, fl) -> float:
 def lambda_coefficient(dev, fl) -> float:
     """Linear pressure drop coefficient, dimensionless."""
     re = reynolds(dev, fl)
-    denominator_inner = (dev.k / (3.7 * dev.diameter)) ** 1.11 + (6.9 / re)
+    denominator_inner = (dev.epsilon / (3.7 * dev.diameter)) ** 1.11 + (6.9 / re)
     denominator = (-1.8 * math.log10(denominator_inner)) ** 2
     return 1 / denominator
 

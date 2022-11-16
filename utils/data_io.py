@@ -18,7 +18,6 @@ def write_data_row(dev: Device, fl: Fluid) -> dict:
     row['device'] = dev.name
     row['length'] = dev.length
     row['flow'] = round(fl.flow, 4)
-    row['outflow'] = round(dev.outflow, 4) if hasattr(dev, 'outflow') else 0
     row['pressure'] = round(fl.p, 6)
     row['pressure_drop'] = round(fl.dp * 1_000, 3)
     row['temperature'] = fl.temp
@@ -53,9 +52,9 @@ def save_data(process_name: str, data: list[dict]) -> None:
 def write_outflow_data(dev: Tee, fl: Fluid) -> dict:
     outflow_data = dict()
     outflow_data['fluid_name'] = fl.fluid_name
-    outflow_data['p'] = fl.p
-    outflow_data['temp'] = fl.temp
-    outflow_data['flow'] = dev.outflow
+    outflow_data['p'] = dev.outflow_p
+    outflow_data['temp'] = dev.outflow_temp
+    outflow_data['flow'] = dev.outflow_m
     return outflow_data
 
 

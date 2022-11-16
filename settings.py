@@ -16,4 +16,4 @@ SCHEMES_DIR = TOML_DIR / "schemes"
 RESULTS = BASE_DIR / "results"
 
 # Devices assumptions
-PIPE_ROUGHNESS = 4.5e-5
+ROUGHNESS = 4.5e-5

@@ -30,7 +30,7 @@ def test_solver_can_make_route_from_shape(provide_main_line):
     s.run()
     assert s.route[0].position == "START"
     assert s.route[1].name == "Pipe DN50"
-    assert s.route[2].name == "T-connection"
+    assert s.route[2].name == "T-conn DN50"
     assert s.route[3].name == "Pipe DN50"
 
 
