@@ -1,6 +1,9 @@
 from dataclasses import dataclass, field
 import tomli
+import json
+from pathlib import Path
 
+from .fluids import Fluid
 from settings import TOML_DIR, PIPE_ROUGHNESS
 from . import equations as eq
 
@@ -8,9 +11,15 @@ from . import equations as eq
 @dataclass
 class Device:
     """Device unit to put the system together."""
-    device: str = None  # Exact name of subclass (Pipe, etc.)
-    type: str = None    # Exact name of type read from devices/*.toml
-    name: str = None    # Descriptive name
+    line_filename: Path = None  # Scheme filename of process line
+    position: str = None        # Position of device on system scheme
+    device: str = None          # Exact name of subclass (Pipe, etc.)
+    type: str = None            # Exact name of type read from devices/*.toml
+    name: str = None            # Descriptive name
+    length: float = None        # Length of device (if applicable)
+
+    def get_fluid(self):
+        pass
 
     def update_p(self, fluid):
         raise NotImplementedError
@@ -24,13 +33,25 @@ class Device:
 
 @dataclass
 class Source(Device):
+    from_line: str = None    # Get fluid from other line name (from the very beginning if 'root')
     entry: str = None        # Name of line's entry point
-    mass_flow: float = None  # Mass stream entering the line, kg / s
 
     def __post_init__(self):
         self.name = "Source"
-        if self.entry != "root":  # Very beginning of the whole system
-            pass  # Tu wczytać mass flow z pozycji na schemacie
+
+    def get_fluid(self) -> Fluid:
+        if self.from_line == "root":  # From very beginning of the whole system
+            filename = f"{self.entry}.toml"
+            with open(TOML_DIR / "fluids" / filename, "rb") as fp:
+                fluid_description = tomli.load(fp)
+            return Fluid(**fluid_description)
+        else:                         # From tee
+            try:
+                with open(self.line_filename.parent / f"{self.from_line}.json", "r") as fp:
+                    fluid_description = json.load(fp)[self.entry]
+            except FileNotFoundError:
+                raise FileNotFoundError("Origin line should be run first.")
+            return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure
         pass
@@ -39,14 +60,12 @@ class Source(Device):
         pass
 
     def update_fluid(self, fluid):
-        fluid.m_flow = self.mass_flow
         fluid.dp = 0.0
         fluid.update_fluid()
 
 
 @dataclass
 class Pipe(Device):
-    length: float = None  # Pipe length, m
     diameter: float = field(init=False, default=None)  # Pipe inner diameter, m
     k: float = field(init=False, default=None)  # Pipe roughness, m
 
@@ -65,4 +84,22 @@ class Pipe(Device):
         pass
 
     def update_fluid(self, fluid):
+        fluid.update_fluid()
+
+
+@dataclass
+class Tee(Device):
+    outflow: float = None
+
+    def __post_init__(self):
+        self.name = "T-connection"
+
+    def update_p(self, fluid):
+        fluid.dp = 0
+
+    def update_temp(self, fluid):
+        pass
+
+    def update_fluid(self, fluid):
+        fluid.flow -= self.outflow
         fluid.update_fluid()

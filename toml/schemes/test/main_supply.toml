@@ -1,0 +1,18 @@
+# Scheme file
+# 4.5 K helium supply main line
+
+[START]  # Position
+    device = "Source"
+    from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
+    entry = "TTL-Start"  # Entry position name
+[ITL-HWR]
+    device = "Pipe"
+    type = "Pipe50"
+    length = 2.424  # m
+[HWR]
+    device = "Tee"
+    outflow = 0.0729  # kg/s
+[HWR-SSR1_1]
+    device = "Pipe"
+    type = "Pipe50"
+    length = 2.424  # m

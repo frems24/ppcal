@@ -1,4 +1,6 @@
-mass_flow = "kg/s"
+length = "m"
+flow = "kg/s"
+outflow = "kg/s"
 pressure = "bar(a)"
 pressure_drop = "mbar"
 temperature = "K"
