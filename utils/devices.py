@@ -107,8 +107,8 @@ class Tee(Device):
     def update_p(self, fluid):
         initial_fluid_p = fluid.p
         fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
-        fluid.p = initial_fluid_p - fluid.dp
         outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
+        fluid.p = initial_fluid_p - fluid.dp
         self.outflow_p = initial_fluid_p - outflow_dp
 
     def update_temp(self, fluid):

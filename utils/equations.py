@@ -46,13 +46,23 @@ def fluid_velocity(dev, fl) -> float:
 
 
 def local_pressure_drop(dev, fl, mode: str) -> float:
-    dp = 0.5 * fl.rho * dzeta_local(dev, mode) * (fluid_velocity(dev, fl) ** 2)
-    return dp
+    p_drop_pa = 0.5 * fl.rho * dzeta_local(dev, mode) * (fluid_velocity(dev, fl) ** 2)
+    p_drop_bar = p_drop_pa / 100_000     # bar
+    return p_drop_bar
 
 
 def dzeta_local(dev, mode: str) -> float:
-    return 0.1
+    if mode == "elbow":
+        return 20 * ft(dev)
+    elif mode == "tee-straight":
+        return 20 * ft(dev)
+    elif mode == "tee-branched":
+        return 60 * ft(dev)
+    else:
+        raise ValueError("Not recognized device for dzeta_local.")
 
 
 def ft(dev) -> float:
-    pass
+    denominator_inner = dev.epsilon / (3.7 * dev.diameter)
+    denominator = math.log10(denominator_inner) ** 2
+    return 0.25 / denominator
