@@ -3,7 +3,7 @@ import math
 # Pipes
 
 
-def darcy_weisbach(dev, fl) -> None:
+def darcy_weisbach(dev, fl) -> float:
     """
     Calculate pressure drop with Darcy-Weisbach equation.
     :param dev: Device class instance
@@ -14,8 +14,7 @@ def darcy_weisbach(dev, fl) -> None:
     denominator = (math.pi ** 2) * (dev.diameter ** 4) * fl.rho
     p_drop_pa = nominator / denominator  # Pa
     p_drop_bar = p_drop_pa / 100_000     # bar
-    fl.dp = p_drop_bar
-    fl.p -= p_drop_bar
+    return p_drop_bar
 
 
 def dzeta_pipe(dev, fl) -> float:
@@ -26,7 +25,7 @@ def dzeta_pipe(dev, fl) -> float:
 def lambda_coefficient(dev, fl) -> float:
     """Linear pressure drop coefficient, dimensionless."""
     re = reynolds(dev, fl)
-    denominator_inner = (dev.k / (3.7 * dev.diameter)) ** 1.11 + (6.9 / re)
+    denominator_inner = (dev.epsilon / (3.7 * dev.diameter)) ** 1.11 + (6.9 / re)
     denominator = (-1.8 * math.log10(denominator_inner)) ** 2
     return 1 / denominator
 
@@ -41,4 +40,29 @@ def fluid_velocity(dev, fl) -> float:
     denominator = math.pi * ((dev.diameter ** 2) / 4) * fl.rho
     return fl.flow / denominator
 
-# Other devices...
+# Flexible hose
+
+# Elbow and T-joint
+
+
+def local_pressure_drop(dev, fl, mode: str) -> float:
+    p_drop_pa = 0.5 * fl.rho * dzeta_local(dev, mode) * (fluid_velocity(dev, fl) ** 2)
+    p_drop_bar = p_drop_pa / 100_000     # bar
+    return p_drop_bar
+
+
+def dzeta_local(dev, mode: str) -> float:
+    if mode == "elbow":
+        return 20 * ft(dev)
+    elif mode == "tee-straight":
+        return 20 * ft(dev)
+    elif mode == "tee-branched":
+        return 60 * ft(dev)
+    else:
+        raise ValueError("Not recognized device for dzeta_local.")
+
+
+def ft(dev) -> float:
+    denominator_inner = dev.epsilon / (3.7 * dev.diameter)
+    denominator = math.log10(denominator_inner) ** 2
+    return 0.25 / denominator

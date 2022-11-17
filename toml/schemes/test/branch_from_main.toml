@@ -7,9 +7,9 @@
     entry = "HWR"  # Entry position name
 [ITL-HWR]
     device = "Pipe"
-    type = "Pipe50"
+    type = "DN50"
     length = 2.424  # m
 [HWR-SSR1_1]
     device = "Pipe"
-    type = "Pipe50"
+    type = "DN50"
     length = 1.424  # m

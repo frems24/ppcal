@@ -7,12 +7,13 @@
     entry = "TTL-Start"  # Entry position name
 [ITL-HWR]
     device = "Pipe"
-    type = "Pipe50"
+    type = "DN50"
     length = 2.424  # m
 [HWR]
     device = "Tee"
-    outflow = 0.0729  # kg/s
+    type = "DN50"
+    outflow_m = 0.0729  # kg/s
 [HWR-SSR1_1]
     device = "Pipe"
-    type = "Pipe50"
+    type = "DN50"
     length = 2.424  # m

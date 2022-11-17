@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from .fluids import Fluid
-from settings import TOML_DIR, PIPE_ROUGHNESS
+from settings import TOML_DIR, ROUGHNESS
 from . import equations as eq
 
 
@@ -67,18 +67,19 @@ class Source(Device):
 @dataclass
 class Pipe(Device):
     diameter: float = field(init=False, default=None)  # Pipe inner diameter, m
-    k: float = field(init=False, default=None)  # Pipe roughness, m
+    epsilon: float = field(init=False, default=None)   # Pipe roughness, m
 
     def __post_init__(self):
-        self.k = PIPE_ROUGHNESS
+        self.epsilon = ROUGHNESS
         filename = TOML_DIR / "devices" / "pipes.toml"
         with open(filename, "rb") as fp:
-            dev = tomli.load(fp)
-        self.name = dev[self.type]['name']
-        self.diameter = dev[self.type]['diameter']
+            devices = tomli.load(fp)
+        self.name = devices[self.type]['name']
+        self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        eq.darcy_weisbach(self, fluid)
+        fluid.dp = eq.darcy_weisbach(self, fluid)
+        fluid.p -= fluid.dp
 
     def update_temp(self, fluid):
         pass
@@ -89,17 +90,30 @@ class Pipe(Device):
 
 @dataclass
 class Tee(Device):
-    outflow: float = None
+    outflow_m: float = None  # Mass stream outflow branched connection
+    diameter: float = field(init=False, default=None)  # Internal diameter, m
+    epsilon: float = field(init=False, default=None)   # Roughness, m
+    outflow_p: float = field(init=False, default=None)  # Outflow pressure, bar(a)
+    outflow_temp: float = field(init=False, default=None)  # Outflow temp, K
 
     def __post_init__(self):
-        self.name = "T-connection"
+        self.epsilon = ROUGHNESS
+        filename = TOML_DIR / "devices" / "tees.toml"
+        with open(filename, "rb") as fp:
+            devices = tomli.load(fp)
+        self.name = devices[self.type]['name']
+        self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        fluid.dp = 0
+        initial_fluid_p = fluid.p
+        fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
+        outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
+        fluid.p = initial_fluid_p - fluid.dp
+        self.outflow_p = initial_fluid_p - outflow_dp
 
     def update_temp(self, fluid):
-        pass
+        self.outflow_temp = fluid.temp
 
     def update_fluid(self, fluid):
-        fluid.flow -= self.outflow
+        fluid.flow -= self.outflow_m
         fluid.update_fluid()
