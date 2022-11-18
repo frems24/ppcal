@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 jupyterlab = "*"
+coolprop = "*"
+matplotlib = "*"
 
 [dev-packages]
 pytest-cov = "*"
