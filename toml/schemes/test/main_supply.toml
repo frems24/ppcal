@@ -13,7 +13,14 @@
     device = "Tee"
     type = "DN50"
     outflow_m = 0.0729  # kg/s
-[HWR-SSR1_1]
+[HWR-ELB1]
     device = "Pipe"
     type = "DN50"
-    length = 2.424  # m
+    length = 1.2  # m
+[ELB1]
+    device = "Elbow"
+    type = "DN50"
+[ELB1-SSR1_1]
+    device = "Pipe"
+    type = "DN50"
+    length = 1.2  # m

@@ -32,6 +32,8 @@ def test_solver_can_make_route_from_shape(provide_main_line):
     assert s.route[1].name == "Pipe DN50"
     assert s.route[2].name == "T-conn DN50"
     assert s.route[3].name == "Pipe DN50"
+    assert s.route[4].name == "Elbow DN50"
+    assert s.route[5].name == "Pipe DN50"
 
 
 def test_csv_file_contains_data_with_units(provide_main_line):
