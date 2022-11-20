@@ -117,3 +117,28 @@ class Tee(Device):
     def update_fluid(self, fluid):
         fluid.flow -= self.outflow_m
         fluid.update_fluid()
+
+
+@dataclass
+class Elbow(Device):
+    diameter: float = field(init=False, default=None)  # Internal diameter, m
+    epsilon: float = field(init=False, default=None)   # Roughness, m
+
+    def __post_init__(self):
+        self.epsilon = ROUGHNESS
+        filename = TOML_DIR / "devices" / "elbows.toml"
+        with open(filename, "rb") as fp:
+            devices = tomli.load(fp)
+        self.name = devices[self.type]['name']
+        self.diameter = devices[self.type]['diameter']
+
+    def update_p(self, fluid):
+        fluid.dp = eq.local_pressure_drop(self, fluid, "elbow")
+        fluid.p -= fluid.dp
+
+    def update_temp(self, fluid):
+        pass
+
+    def update_fluid(self, fluid):
+        fluid.update_fluid()
+
