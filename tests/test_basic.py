@@ -7,14 +7,16 @@ from utils import data_io
 @pytest.fixture(scope="function")
 def provide_main_line():
     process_line_name = "test/main_supply"
-    s = Solver(process_line_name)
+    props_engine = "coolprop"
+    s = Solver(process_line_name, props_engine)
     return s
 
 
 @pytest.fixture(scope="function")
 def provide_branch_line():
     process_line_name = "test/branch_from_main"
-    s = Solver(process_line_name)
+    props_engine = "coolprop"
+    s = Solver(process_line_name, props_engine)
     return s
 
 
