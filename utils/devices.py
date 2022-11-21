@@ -18,7 +18,7 @@ class Device:
     name: str = None            # Descriptive name
     length: float = None        # Length of device (if applicable)
 
-    def get_fluid(self):
+    def get_fluid(self, props_engine):
         pass
 
     def update_p(self, fluid):
@@ -39,19 +39,19 @@ class Source(Device):
     def __post_init__(self):
         self.name = "Source"
 
-    def get_fluid(self) -> Fluid:
+    def get_fluid(self, props_engine) -> Fluid:
         if self.from_line == "root":  # From very beginning of the whole system
             filename = f"{self.entry}.toml"
             with open(TOML_DIR / "fluids" / filename, "rb") as fp:
                 fluid_description = tomli.load(fp)
-            return Fluid(**fluid_description)
         else:                         # From tee
             try:
                 with open(self.line_filename.parent / f"{self.from_line}.json", "r") as fp:
                     fluid_description = json.load(fp)[self.entry]
             except FileNotFoundError:
                 raise FileNotFoundError("Origin line should be run first.")
-            return Fluid(**fluid_description)
+        fluid_description['props_pkg'] = props_engine
+        return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure
         pass

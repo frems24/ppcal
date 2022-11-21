@@ -1,7 +1,7 @@
 length = "m"
 flow = "kg/s"
 pressure = "bar(a)"
-pressure_drop = "mbar"
+dp = "mbar"
 temperature = "K"
 density = "kg/m3"
 viscosity = "Pa s"

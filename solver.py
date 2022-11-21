@@ -7,8 +7,9 @@ from utils.data_io import (write_data_row, save_data,
 
 class Solver:
     """A class to calculating changes in fluid properties in the system."""
-    def __init__(self, process_name: str):
+    def __init__(self, process_name: str, props_pkg: str = "coolprop"):
         self.process_name = process_name
+        self.props_pkg = props_pkg
         self.route: list[Device] = Scheme(self.process_name).make_route()
         self.fluid: Fluid = self.initiate_fluid()
         self.data: list[dict] = []
@@ -16,7 +17,7 @@ class Solver:
 
     def initiate_fluid(self) -> Fluid:
         source = self.route[0]
-        return source.get_fluid()
+        return source.get_fluid(self.props_pkg)
 
     def run(self):
         """Method to perform calculations and get fluid instance at the end of system."""
