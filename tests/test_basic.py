@@ -7,16 +7,16 @@ from utils import data_io
 @pytest.fixture(scope="function")
 def provide_main_line():
     process_line_name = "test/main_supply"
-    props_engine = "coolprop"
-    s = Solver(process_line_name, props_engine)
+    props_pkg = "coolprop"
+    s = Solver(process_line_name, props_pkg)
     return s
 
 
 @pytest.fixture(scope="function")
 def provide_branch_line():
     process_line_name = "test/branch_from_main"
-    props_engine = "coolprop"
-    s = Solver(process_line_name, props_engine)
+    props_pkg = "coolprop"
+    s = Solver(process_line_name, props_pkg)
     return s
 
 
@@ -25,6 +25,7 @@ def test_solver_uses_fluid_from_source(provide_main_line):
     fluid = s.run()
     assert s.fluid.p > 0
     assert fluid.fluid_name == "He"
+    assert fluid.props_pkg == "coolprop"
 
 
 def test_solver_can_make_route_from_shape(provide_main_line):
@@ -58,3 +59,18 @@ def test_branch_line(provide_main_line, provide_branch_line):
     s2 = provide_branch_line
     fluid = s2.run()
     assert fluid.flow == 0.0729
+
+
+def test_hepak_is_not_implemented():
+    process_line_name = "test/main_supply"
+    props_engine = "hepak"
+    with pytest.raises(NotImplementedError):
+        s = Solver(process_line_name, props_engine)
+        s.run()
+
+
+def test_only_coolprop_and_hepak_is_allowed():
+    process_line_name = "test/main_supply"
+    props_engine = "other_engine"
+    with pytest.raises(ValueError):
+        s = Solver(process_line_name, props_engine)

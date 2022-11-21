@@ -6,8 +6,8 @@ from solver import Solver
 @pytest.fixture(scope="function")
 def provide_main_line():
     process_line_name = "test/main_supply"
-    props_engine = "coolprop"
-    s = Solver(process_line_name, props_engine)
+    props_pkg = "coolprop"
+    s = Solver(process_line_name, props_pkg)
     return s
 
 
