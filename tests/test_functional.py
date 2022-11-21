@@ -1,6 +1,7 @@
 import pytest
 
 from solver import Solver
+from utils import coolprop
 
 
 @pytest.fixture(scope="function")
@@ -19,6 +20,8 @@ def test_solver_can_compute_dp(provide_main_line):
 
 def test_solver_can_compute_fluid_props(provide_main_line):
     s = provide_main_line
-    start_fluid_rho = s.fluid.rho
+    start_fluid = s.fluid
+    coolprop.update_fluid_props(start_fluid)
+    start_fluid_rho = start_fluid.rho
     end_fluid = s.run()
     assert end_fluid.rho < start_fluid_rho

@@ -10,9 +10,9 @@ class Fluid:
     temp: float      # Temperature, K
     flow: float      # Mass flow, kg / s
     props_pkg: str   # Properties calculation package ('coolprop', 'hepak')
-    rho: float = field(init=False, default=None)     # Density, kg / m3
+    rho: float = field(init=False, default=None)     # Density, kg/m3
     mi: float = field(init=False, default=None)      # Dynamic viscosity, Pa s
-    kappa: float = field(init=False, default=None)   # Specific heat ratio cp/cv
+    kappa: float = field(init=False, default=None)   # Specific heat ratio CP/cv
     dp: float = field(init=False, default=None)      # Pressure drop in device, bar
     engine: Any = field(init=False, default=None)    # fluid properties calculation module
 
