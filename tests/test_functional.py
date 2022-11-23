@@ -25,3 +25,13 @@ def test_solver_can_compute_fluid_props(provide_main_line):
     start_fluid_rho = start_fluid.rho
     end_fluid = s.run()
     assert end_fluid.rho < start_fluid_rho
+
+
+def test_reversed_route():
+    process_line_name = "test/reversed-vent"
+    s = Solver(process_line_name)
+    start_fluid = s.fluid
+    coolprop.update_fluid_props(start_fluid)
+    start_fluid_p = start_fluid.p
+    end_fluid = s.run()
+    assert end_fluid.p > start_fluid_p

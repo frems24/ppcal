@@ -1,0 +1,6 @@
+# Fluid file
+# Fluid from vent system
+fluid_name = "He"
+p = 1.434  # bar(a)
+temp = 10  # K
+flow = 13.277  # kg/s

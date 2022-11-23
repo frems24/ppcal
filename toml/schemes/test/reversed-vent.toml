@@ -1,0 +1,31 @@
+# Scheme file
+# From vent system
+
+[START]  # Position
+    device = "Source"
+    from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
+    entry = "reversed-vent-start"  # Entry position name
+[ITL-ELB1]
+    device = "Pipe"
+    type = "ManiL"
+    length = 0.585  # m
+[ELB1]
+    device = "Elbow"
+    type = "ManiL"
+[ELB1-ELB2a]
+    device = "Pipe"
+    type = "ManiL"
+    length = 3.1327  # m
+[ELB2a]
+    device = "Elbow"
+    type = "ManiL"
+[ELB2b]
+    device = "Elbow"
+    type = "ManiL"
+[ELB2c]
+    device = "Elbow"
+    type = "ManiL"
+[ELB2c-Valv]
+    device = "Pipe"
+    type = "ManiXL"
+    length = 0.4558  # m

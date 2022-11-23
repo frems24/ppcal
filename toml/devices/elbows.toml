@@ -1,3 +1,11 @@
 [DN50]
 name = "Elbow DN50"
 diameter = 0.0545  # m
+
+[ManiL]
+name = "Elbow Manifold L"
+diameter = 0.154
+
+[ManiXL]
+name = "Elbow Manifold XL"
+diameter = 0.1623
