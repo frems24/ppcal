@@ -41,8 +41,10 @@ class Source(Device):
 
     def get_fluid(self, props_engine) -> Fluid:
         if self.from_line == "root":  # From very beginning of the whole system
-            filename = f"{self.entry}.toml"
-            with open(TOML_DIR / "fluids" / filename, "rb") as fp:
+            if self.entry[:2] != "f-":
+                raise ValueError("Name of fluid description file should start with 'f-'.")
+            filename = self.line_filename.parent / f"{self.entry}.toml"
+            with open(filename, "rb") as fp:
                 fluid_description = tomli.load(fp)
         else:                         # From tee
             try:

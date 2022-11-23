@@ -4,7 +4,7 @@
 [START]  # Position
     device = "Source"
     from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
-    entry = "TTL-Start"  # Entry position name
+    entry = "f-TTL-Start"  # Entry position name
 [ITL-HWR]
     device = "Pipe"
     type = "DN50"
