@@ -19,7 +19,8 @@ class Device:
     device: str = None          # Exact name of subclass (Pipe, etc.)
     type: str = None            # Exact name of type read from devices/*.toml
     name: str = None            # Descriptive name
-    length: float = None        # Length of device (if applicable)
+    length: float = None        # Length of device, m (if applicable)
+    bell_l: float = 0           # Expansion bellows length, m (if applicable)
 
     def get_fluid(self, props_engine):
         pass
@@ -81,6 +82,9 @@ class Pipe(Device):
             devices = tomli.load(fp)
         self.name = devices[self.type]['name']
         self.diameter = devices[self.type]['diameter']
+        if self.bell_l > 0:
+            self.length += self.bell_l
+            self.name += " bellows"
 
     def update_p(self, fluid):
         fluid.dp = eq.darcy_weisbach(self, fluid)

@@ -1,7 +1,8 @@
 length = "m"
+bell_l = 'm'
 flow = "kg/s"
 pressure = "bar(a)"
 dp = "mbar"
 temperature = "K"
 density = "kg/m3"
-viscosity = "Pa s"
+#viscosity = "Pa s"

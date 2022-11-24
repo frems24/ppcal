@@ -17,6 +17,7 @@
     device = "Pipe"
     type = "DN50"
     length = 1.2  # m
+    bell_l = 0.35  # m  Expansion bellows length
 [ELB1]
     device = "Elbow"
     type = "DN50"
