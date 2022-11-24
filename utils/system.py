@@ -20,9 +20,9 @@ class Scheme:
         positions = list(scheme_toml)
         direction_desc = scheme_toml['START'].get('direction', 'forward')
         if direction_desc == 'forward':
-            direction = sub
+            calculate = sub
         elif direction_desc == 'reverse':
-            direction = add
+            calculate = add
         else:
             raise ValueError("Source direction parameter can be only 'forward' or 'reverse'.")
 
@@ -30,7 +30,7 @@ class Scheme:
             description = scheme_toml[position]
             description['line_filename'] = filename
             description['position'] = position
-            description['calculate'] = direction
+            description['calculate'] = calculate
             device = getattr(devices, description['device'])(**description)
             self.route.append(device)
 
