@@ -3,6 +3,7 @@
 
 [START]  # Position
     device = "Source"
+    direction = "reverse"
     from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
     entry = "f-reversed-vent-start"  # Entry position name
 [ITL-ELB1]

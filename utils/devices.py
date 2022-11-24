@@ -1,3 +1,4 @@
+from typing import Callable
 from dataclasses import dataclass, field
 import tomli
 import json
@@ -12,6 +13,8 @@ from . import equations as eq
 class Device:
     """Device unit to put the system together."""
     line_filename: Path = None  # Scheme filename of process line
+    direction: str = 'forward'  # Direction of calculation relative to mass flow
+    calculate: Callable[[float, float], float] = None  # Function to add or subtract parameter
     position: str = None        # Position of device on system scheme
     device: str = None          # Exact name of subclass (Pipe, etc.)
     type: str = None            # Exact name of type read from devices/*.toml
@@ -81,7 +84,8 @@ class Pipe(Device):
 
     def update_p(self, fluid):
         fluid.dp = eq.darcy_weisbach(self, fluid)
-        fluid.p -= fluid.dp
+        new_p = self.calculate(fluid.p, fluid.dp)
+        fluid.p = new_p
 
     def update_temp(self, fluid):
         pass
@@ -110,8 +114,8 @@ class Tee(Device):
         initial_fluid_p = fluid.p
         fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
         outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
-        fluid.p = initial_fluid_p - fluid.dp
-        self.outflow_p = initial_fluid_p - outflow_dp
+        fluid.p = self.calculate(initial_fluid_p, fluid.dp)
+        self.outflow_p = self.calculate(initial_fluid_p, outflow_dp)
 
     def update_temp(self, fluid):
         self.outflow_temp = fluid.temp
@@ -136,7 +140,8 @@ class Elbow(Device):
 
     def update_p(self, fluid):
         fluid.dp = eq.local_pressure_drop(self, fluid, "elbow")
-        fluid.p -= fluid.dp
+        new_p = self.calculate(fluid.p, fluid.dp)
+        fluid.p = new_p
 
     def update_temp(self, fluid):
         pass
