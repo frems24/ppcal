@@ -26,3 +26,11 @@ diameter = 0.02  # m  poprawić
 [DN15]
 name = "Pipe DN15"
 diameter = 15  # mm
+
+[ManiL]
+name = "Pipe Manifold L"
+diameter = 0.154
+
+[ManiXL]
+name = "Pipe Manifold XL"
+diameter = 0.1623
