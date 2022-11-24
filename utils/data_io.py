@@ -17,13 +17,18 @@ def write_data_row(dev: Device, fl: Fluid) -> dict:
     row = dict()
     row['position'] = dev.position
     row['device'] = dev.name
-    row['length'] = dev.length
+    if dev.device == 'Pipe':
+        row['length'] = round(dev.length - dev.bell_l, 3)
+        row['bell_l'] = round(dev.bell_l, 3) if dev.bell_l else None
+    else:
+        row['length'] = round(dev.length, 3) if dev.length else None
+        row['bell_l'] = None
     row['flow'] = round(fl.flow, 4)
     row['pressure'] = round(fl.p, 6)
     row['dp'] = round(fl.dp * 1_000, 3)
     row['temperature'] = fl.temp
-    row['density'] = fl.rho
-    row['viscosity'] = fl.mi
+    row['density'] = round(fl.rho, 3)
+    # row['viscosity'] = fl.mi
     return row
 
 
