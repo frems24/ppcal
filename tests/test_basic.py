@@ -56,6 +56,7 @@ def test_branch_line(provide_main_line, provide_branch_line):
     s1.run()
     s2 = provide_branch_line
     fluid = s2.run()
+    assert s2.route[2].name == "Valve DN15"
     assert fluid.flow == 0.0729
 
 
