@@ -1,4 +1,5 @@
 import math
+import sympy as sp
 
 # Pipes
 
@@ -66,3 +67,31 @@ def ft(dev) -> float:
     denominator_inner = dev.epsilon / (3.7 * dev.diameter)
     denominator = math.log10(denominator_inner) ** 2
     return 0.25 / denominator
+
+# Valves
+
+
+def valve_pressure_drop(dev, fl) -> float:
+    kv_value, w, dp, p, rho, k, x_t, n6 = sp.symbols('kv_value, w, dp, p, rho, k, x_t, n6', real=True, positive=True)
+    x = dp / p
+    y = sp.Integer(1) - x / (sp.Rational(30, 14) * k * x_t)
+    kv = w / (n6 * y * sp.sqrt(x * p * rho))
+    expr_symbolic = kv - kv_value
+    expr = expr_symbolic.subs({kv_value: dev.kv,
+                               w: fl.flow * 3600,
+                               p: fl.p,
+                               rho: fl.rho,
+                               k: fl.kappa,
+                               x_t: dev.xt,
+                               n6: dev.n6})
+    all_results_set = sp.nonlinsolve([expr], [dp])  # set of all results
+    all_results = all_results_set.args  # tuple of all results, each result is a one-element tuple
+    condition = dev.xt * (fl.kappa / 1.4)
+    p_drops = []
+    for result in all_results:
+        p_drop = result[0]  # calculated pressure drop from a tuple
+        if p_drop / fl.p < condition:  # non-choke flow
+            p_drops.append(p_drop)
+    assert len(p_drops) == 1
+    p_drop_bar = p_drops[0]
+    return p_drop_bar

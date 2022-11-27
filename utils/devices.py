@@ -171,7 +171,9 @@ class Valve(Device):
         self.kv = valves[self.type]['kv'] * settings.VALVE_OPENING
 
     def update_p(self, fluid):
-        pass
+        fluid.dp = eq.valve_pressure_drop(self, fluid)
+        new_p = self.calculate(fluid.p, fluid.dp)
+        fluid.p = new_p
 
     def update_temp(self, fluid):
         pass

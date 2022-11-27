@@ -7,12 +7,12 @@
     entry = "HWR"  # Entry position name
 [HWR-VALVE1]
     device = "Pipe"
-    type = "DN50"
-    length = 2.424  # m
+    type = "DN15"
+    length = 5.3  # m
 [VALVE1]
     device = "Valve"
     type = "DN15"
 [VALVE1-CM]
     device = "Pipe"
-    type = "DN50"
+    type = "DN15"
     length = 1.424  # m
