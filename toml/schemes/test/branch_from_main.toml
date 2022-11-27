@@ -5,11 +5,14 @@
     device = "Source"
     from_line = "main_supply"   # Get fluid from other line name (from the very beginning if 'root')
     entry = "HWR"  # Entry position name
-[ITL-HWR]
+[HWR-VALVE1]
     device = "Pipe"
     type = "DN50"
     length = 2.424  # m
-[HWR-SSR1_1]
+[VALVE1]
+    device = "Valve"
+    type = "DN15"
+[VALVE1-CM]
     device = "Pipe"
     type = "DN50"
     length = 1.424  # m

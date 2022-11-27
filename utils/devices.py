@@ -5,7 +5,8 @@ import json
 from pathlib import Path
 
 from .fluids import Fluid
-from settings import TOML_DIR, ROUGHNESS
+import settings
+from settings import DEVICES_DIR
 from . import equations as eq
 
 
@@ -76,8 +77,8 @@ class Pipe(Device):
     epsilon: float = field(init=False, default=None)   # Pipe roughness, m
 
     def __post_init__(self):
-        self.epsilon = ROUGHNESS
-        filename = TOML_DIR / "devices" / "pipes.toml"
+        self.epsilon = settings.ROUGHNESS
+        filename = DEVICES_DIR / "pipes.toml"
         with open(filename, "rb") as fp:
             devices = tomli.load(fp)
         self.name = devices[self.type]['name']
@@ -107,8 +108,8 @@ class Tee(Device):
     outflow_temp: float = field(init=False, default=None)  # Outflow temp, K
 
     def __post_init__(self):
-        self.epsilon = ROUGHNESS
-        filename = TOML_DIR / "devices" / "tees.toml"
+        self.epsilon = settings.ROUGHNESS
+        filename = DEVICES_DIR / "tees.toml"
         with open(filename, "rb") as fp:
             devices = tomli.load(fp)
         self.name = devices[self.type]['name']
@@ -135,8 +136,8 @@ class Elbow(Device):
     epsilon: float = field(init=False, default=None)   # Roughness, m
 
     def __post_init__(self):
-        self.epsilon = ROUGHNESS
-        filename = TOML_DIR / "devices" / "elbows.toml"
+        self.epsilon = settings.ROUGHNESS
+        filename = DEVICES_DIR / "elbows.toml"
         with open(filename, "rb") as fp:
             devices = tomli.load(fp)
         self.name = devices[self.type]['name']
@@ -153,3 +154,27 @@ class Elbow(Device):
     def update_fluid(self, fluid):
         fluid.update_fluid()
 
+
+@dataclass
+class Valve(Device):
+    kv: float = field(init=False, default=None)
+    n6: float = field(init=False, default=None)
+    xt: float = field(init=False, default=None)
+
+    def __post_init__(self):
+        self.n6 = settings.N6
+        self.xt = settings.X_T
+        filename = DEVICES_DIR / "valves.toml"
+        with open(filename, "rb") as fp:
+            valves = tomli.load(fp)
+        self.name = valves[self.type]['name']
+        self.kv = valves[self.type]['kv'] * settings.VALVE_OPENING
+
+    def update_p(self, fluid):
+        pass
+
+    def update_temp(self, fluid):
+        pass
+
+    def update_fluid(self, fluid):
+        fluid.update_fluid()
