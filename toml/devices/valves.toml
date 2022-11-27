@@ -1,0 +1,31 @@
+[DN6]
+name = "Valve DN6"
+kv = 1.2  # m3 / h (for valve in full open state)
+
+[DN8]
+name = "Valve DN8"
+kv = 2.0
+
+[DN15]
+name = "Valve DN15"
+kv = 5.8
+
+[DN20]
+name = "Valve DN20"
+kv = 11.0
+
+[DN25]
+name = "Valve DN25"
+kv = 15.0
+
+[DN50]
+name = "Valve DN50"
+kv = 71.0
+
+[DN65]
+name = "Valve DN65"
+kv = 98.0
+
+[DN250]
+name = "Valve DN250"
+kv = 1550.0
