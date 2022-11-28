@@ -6,7 +6,7 @@ from utils.data_io import (write_data_row, save_data,
 
 
 class Solver:
-    """A class to calculating changes in fluid properties in the system."""
+    """A class to calculating changes in fluid properties in the system line."""
     def __init__(self, process_name: str, props_pkg: str = "coolprop"):
         self.process_name = process_name
         self.props_pkg = props_pkg
@@ -20,7 +20,7 @@ class Solver:
         return source.get_fluid(self.props_pkg)
 
     def run(self):
-        """Method to perform calculations and get fluid instance at the end of system."""
+        """Method to perform calculations and get fluid instance at the end of system line."""
         if len(self.route) == 0:
             raise RuntimeError(f"Empty scheme: '{self.process_name}'. Nothing to solve.")
         for device in self.route:
@@ -39,6 +39,6 @@ class Solver:
 
 if __name__ == "__main__":
     process_line_name = "m_4_5_K_sup"
-    s = Solver(process_name=process_line_name)
+    s = Runner(process_name=process_line_name)
     f = s.run()
     print(f"Pressure at end:   {f.p} bar(a)")
