@@ -12,7 +12,6 @@
 [HWR]
     device = "Tee"
     type = "DN50"
-#    outflow_m = 0.0729  # kg/s
     outflow_m = 0.0108  # kg/s
 [HWR-ELB1]
     device = "Pipe"
