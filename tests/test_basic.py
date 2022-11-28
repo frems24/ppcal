@@ -33,8 +33,12 @@ def test_solver_can_make_route_from_shape(provide_main_line):
     s.run()
     assert s.route[0].position == "START"
     assert s.route[1].name == "Pipe DN50"
+    assert s.route[1].number == 1
     assert s.route[2].name == "T-conn DN50"
     assert s.route[4].name == "Elbow DN50"
+    assert s.route[5].name == "Elbow DN50"
+    assert s.route[4].number == 1
+    assert s.route[5].number == 3
 
 
 def test_csv_file_contains_data_with_units(provide_main_line):
@@ -57,7 +61,7 @@ def test_branch_line(provide_main_line, provide_branch_line):
     s2 = provide_branch_line
     fluid = s2.run()
     assert s2.route[2].name == "Valve DN15"
-    # assert fluid.flow == 0.0729
+    assert fluid.flow == 0.0108
 
 
 def test_hepak_is_not_implemented():

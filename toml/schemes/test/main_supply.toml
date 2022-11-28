@@ -12,7 +12,6 @@
 [HWR]
     device = "Tee"
     type = "DN50"
-#    outflow_m = 0.0729  # kg/s
     outflow_m = 0.0108  # kg/s
 [HWR-ELB1]
     device = "Pipe"
@@ -22,6 +21,10 @@
 [ELB1]
     device = "Elbow"
     type = "DN50"
+[ELB2-4]
+    device = "Elbow"
+    type = "DN50"
+    number = 3
 [ELB1-SSR1_1]
     device = "Pipe"
     type = "DN50"

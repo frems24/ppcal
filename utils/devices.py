@@ -22,6 +22,7 @@ class Device:
     name: str = None            # Descriptive name
     length: float = None        # Length of device, m (if applicable)
     bell_l: float = 0           # Expansion bellows length, m (if applicable)
+    number: int = field(init=False, default=1)  # Number of units (elbows only)
 
     def get_fluid(self, props_engine):
         pass
@@ -134,6 +135,7 @@ class Tee(Device):
 class Elbow(Device):
     diameter: float = field(init=False, default=None)  # Internal diameter, m
     epsilon: float = field(init=False, default=None)   # Roughness, m
+    number: int = 1                                    # Number of elbows
 
     def __post_init__(self):
         self.epsilon = settings.ROUGHNESS
@@ -144,7 +146,7 @@ class Elbow(Device):
         self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        fluid.dp = eq.local_pressure_drop(self, fluid, "elbow")
+        fluid.dp = eq.local_pressure_drop(self, fluid, "elbow") * self.number
         new_p = self.calculate(fluid.p, fluid.dp)
         fluid.p = new_p
 
