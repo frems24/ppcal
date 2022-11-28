@@ -4,7 +4,7 @@ import json
 
 from .devices import Device, Tee
 from .fluids import Fluid
-from settings import TOML_DIR, RESULTS, SCHEMES_DIR
+from settings import BASE_DIR, RESULTS, SYSTEMS_DIR
 
 
 def write_data_row(dev: Device, fl: Fluid) -> dict:
@@ -40,7 +40,7 @@ def save_data(process_name: str, data: list[dict]) -> None:
     :param data: Actual data to write in
     """
     try:
-        with open(TOML_DIR / "units.toml", "rb") as fp:
+        with open(BASE_DIR / "utils" / "units.toml", "rb") as fp:
             units = tomli.load(fp)
     except FileNotFoundError:
         units = {}
@@ -66,7 +66,7 @@ def write_outflow_data(dev: Tee, fl: Fluid) -> dict:
 
 
 def save_outflows_scheme(process_name: str, outflows: dict) -> None:
-    with open(SCHEMES_DIR / f"{process_name}.json", 'w') as fp:
+    with open(SYSTEMS_DIR / f"{process_name}.json", 'w') as fp:
         json.dump(outflows, fp)
 
 

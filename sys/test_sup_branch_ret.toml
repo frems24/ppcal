@@ -1,0 +1,7 @@
+schemes_dir = "test"
+
+process_lines_order = [
+    "main-supply",
+    "branch-from-main",
+    "reversed-vent"
+]

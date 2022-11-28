@@ -6,17 +6,17 @@ from utils import data_io
 
 @pytest.fixture(scope="function")
 def provide_lines():
-    system_name = "sys/test_sup_branch_ret"
+    system_name = "sys/test_sup_branch_ret.toml"
     r = Runner(system_name)
-    process_lines = r.get_lines()
-    return process_lines
+    r.read_process_lines()
+    return r.process_lines
 
 
 def test_runner_can_make_system_to_solve(provide_lines):
     assert len(provide_lines) == 3
-    assert provide_lines[0].line_name == "main_supply"
-    assert provide_lines[1].line_name == "branch_from_main"
-    assert provide_lines[2].line_name == "reversed-vent"
+    assert provide_lines[0].process_line_name == "test/main-supply"
+    assert provide_lines[1].process_line_name == "test/branch-from-main"
+    assert provide_lines[2].process_line_name == "test/reversed-vent"
 
 
 def test_solver_uses_fluid_from_source(provide_lines):
@@ -42,7 +42,7 @@ def test_solver_can_make_route_from_shape(provide_lines):
 
 def test_csv_file_contains_data_with_units(provide_lines):
     s = provide_lines[0]
-    data = data_io.read_data(s.process_name)
+    data = data_io.read_data(s.process_line_name)
     assert "device" in data[0].keys()
     assert data[1]["device"] == "Source"
     assert data[0]["pressure"] == "bar(a)"
