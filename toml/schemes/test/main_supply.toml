@@ -21,6 +21,10 @@
 [ELB1]
     device = "Elbow"
     type = "DN50"
+[ELB2-4]
+    device = "Elbow"
+    type = "DN50"
+    number = 3
 [ELB1-SSR1_1]
     device = "Pipe"
     type = "DN50"

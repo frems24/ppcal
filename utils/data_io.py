@@ -17,6 +17,7 @@ def write_data_row(dev: Device, fl: Fluid) -> dict:
     row = dict()
     row['position'] = dev.position
     row['device'] = dev.name
+    row['number'] = dev.number
     if dev.device == 'Pipe':
         row['length'] = round(dev.length - dev.bell_l, 3)
         row['bell_l'] = round(dev.bell_l, 3) if dev.bell_l else None
