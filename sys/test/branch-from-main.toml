@@ -3,7 +3,7 @@
 
 [START]  # Position
     device = "Source"
-    from_line = "main_supply"   # Get fluid from other line name (from the very beginning if 'root')
+    from_line = "main-supply"   # Get fluid from other line name (from the very beginning if 'root')
     entry = "HWR"  # Entry position name
 [HWR-VALVE1]
     device = "Pipe"

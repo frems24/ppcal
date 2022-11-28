@@ -1,36 +1,35 @@
 import pytest
 
-from solver import Solver
+from solver import Runner
 from utils import coolprop
 
 
 @pytest.fixture(scope="function")
-def provide_main_line():
-    process_line_name = "test/main_supply"
-    props_pkg = "coolprop"
-    s = Solver(process_line_name, props_pkg)
-    return s
+def provide_lines():
+    system_name = "sys/test_sup_branch_ret.toml"
+    r = Runner(system_name)
+    r.read_process_lines()
+    return r.process_lines
 
 
-def test_solver_can_compute_dp(provide_main_line):
-    s = provide_main_line
+def test_solver_can_compute_dp(provide_lines):
+    s = provide_lines[0]
     end_fluid = s.run()
     assert end_fluid.dp > 0
 
 
-def test_solver_can_compute_fluid_props(provide_main_line):
-    s = provide_main_line
-    start_fluid = s.fluid
+def test_solver_can_compute_fluid_props(provide_lines):
+    s = provide_lines[0]
+    start_fluid = s.initiate_fluid()
     coolprop.update_fluid_props(start_fluid)
     start_fluid_rho = start_fluid.rho
     end_fluid = s.run()
     assert end_fluid.rho < start_fluid_rho
 
 
-def test_reversed_route():
-    process_line_name = "test/reversed-vent"
-    s = Solver(process_line_name)
-    start_fluid = s.fluid
+def test_reversed_route(provide_lines):
+    s = provide_lines[2]
+    start_fluid = s.initiate_fluid()
     coolprop.update_fluid_props(start_fluid)
     start_fluid_p = start_fluid.p
     end_fluid = s.run()

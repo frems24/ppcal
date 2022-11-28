@@ -1,35 +1,34 @@
 import pytest
 
-from solver import Solver
+from solver import Runner
 from utils import data_io
 
 
 @pytest.fixture(scope="function")
-def provide_main_line():
-    process_line_name = "test/main_supply"
-    props_pkg = "coolprop"
-    s = Solver(process_line_name, props_pkg)
-    return s
+def provide_lines():
+    system_name = "sys/test_sup_branch_ret.toml"
+    r = Runner(system_name)
+    r.read_process_lines()
+    return r.process_lines
 
 
-@pytest.fixture(scope="function")
-def provide_branch_line():
-    process_line_name = "test/branch_from_main"
-    props_pkg = "coolprop"
-    s = Solver(process_line_name, props_pkg)
-    return s
+def test_runner_can_make_system_to_solve(provide_lines):
+    assert len(provide_lines) == 3
+    assert provide_lines[0].process_line_name == "test/main-supply"
+    assert provide_lines[1].process_line_name == "test/branch-from-main"
+    assert provide_lines[2].process_line_name == "test/reversed-vent"
 
 
-def test_solver_uses_fluid_from_source(provide_main_line):
-    s = provide_main_line
-    fluid = s.run()
-    assert s.fluid.p > 0
+def test_solver_uses_fluid_from_source(provide_lines):
+    process_line = provide_lines[0]
+    fluid = process_line.run()
+    assert process_line.fluid.p > 0
     assert fluid.fluid_name == "He"
     assert fluid.props_pkg == "coolprop"
 
 
-def test_solver_can_make_route_from_shape(provide_main_line):
-    s = provide_main_line
+def test_solver_can_make_route_from_shape(provide_lines):
+    s = provide_lines[0]
     s.run()
     assert s.route[0].position == "START"
     assert s.route[1].name == "Pipe DN50"
@@ -41,39 +40,24 @@ def test_solver_can_make_route_from_shape(provide_main_line):
     assert s.route[5].number == 3
 
 
-def test_csv_file_contains_data_with_units(provide_main_line):
-    s = provide_main_line
-    data = data_io.read_data(s.process_name)
+def test_csv_file_contains_data_with_units(provide_lines):
+    s = provide_lines[0]
+    data = data_io.read_data(s.process_line_name)
     assert "device" in data[0].keys()
     assert data[1]["device"] == "Source"
     assert data[0]["pressure"] == "bar(a)"
 
 
-def test_outflows(provide_main_line):
-    s = provide_main_line
+def test_outflows(provide_lines):
+    s = provide_lines[0]
     s.run()
     assert s.outflows['HWR']['flow'] > 0
 
 
-def test_branch_line(provide_main_line, provide_branch_line):
-    s1 = provide_main_line
+def test_branch_line(provide_lines):
+    s1 = provide_lines[0]
+    s2 = provide_lines[1]
     s1.run()
-    s2 = provide_branch_line
     fluid = s2.run()
     assert s2.route[2].name == "Valve DN15"
     assert fluid.flow == 0.0108
-
-
-def test_hepak_is_not_implemented():
-    process_line_name = "test/main_supply"
-    props_engine = "hepak"
-    with pytest.raises(NotImplementedError):
-        s = Solver(process_line_name, props_engine)
-        s.run()
-
-
-def test_only_coolprop_and_hepak_is_allowed():
-    process_line_name = "test/main_supply"
-    props_engine = "other_engine"
-    with pytest.raises(ValueError):
-        s = Solver(process_line_name, props_engine)

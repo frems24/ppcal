@@ -1,7 +1,7 @@
 import tomli
 from operator import add, sub
 
-from settings import SCHEMES_DIR
+from settings import SYSTEMS_DIR
 from . import devices
 
 
@@ -13,7 +13,7 @@ class Scheme:
 
     def make_route(self):
         """Make a list of devices connected together in the system."""
-        filename = SCHEMES_DIR / f"{self.process_line}.toml"
+        filename = SYSTEMS_DIR / f"{self.process_line}.toml"
         with open(filename, mode="rb") as fp:
             scheme_toml = tomli.load(fp)
 
