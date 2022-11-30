@@ -19,14 +19,6 @@ def test_runner_can_make_system_to_solve(provide_lines):
     assert provide_lines[2].process_line_name == "test/reversed-vent"
 
 
-def test_solver_uses_fluid_from_source(provide_lines):
-    process_line = provide_lines[0]
-    fluid = process_line.run()
-    assert process_line.fluid.p > 0
-    assert fluid.fluid_name == "He"
-    assert fluid.props_pkg == "coolprop"
-
-
 def test_solver_can_make_route_from_shape(provide_lines):
     s = provide_lines[0]
     s.run()
@@ -38,6 +30,28 @@ def test_solver_can_make_route_from_shape(provide_lines):
     assert s.route[5].name == "Elbow DN50"
     assert s.route[4].number == 1
     assert s.route[5].number == 3
+
+
+def test_solver_uses_fluid_from_source(provide_lines):
+    entry_fluid = provide_lines[0].initiate_fluid()
+    initial_p = entry_fluid.p
+    assert initial_p == 2.9
+    process_line = provide_lines[0]
+    assert hasattr(process_line, "fluid")
+    fluid = process_line.run()
+    assert fluid.p < initial_p
+    assert fluid.fluid_name == "He"
+    assert fluid.props_pkg == "coolprop"
+
+
+def test_solver_can_calculate_cumulative_pressure_drop(provide_lines):
+    entry_fluid = provide_lines[0].initiate_fluid()
+    initial_dp_total = entry_fluid.dp_total
+    assert initial_dp_total == 0
+    fluid = provide_lines[0].run()
+    assert fluid.dp_total > initial_dp_total
+    assert fluid.fluid_name == "He"
+    assert fluid.props_pkg == "coolprop"
 
 
 def test_csv_file_contains_data_with_units(provide_lines):
