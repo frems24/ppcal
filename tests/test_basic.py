@@ -49,7 +49,7 @@ def test_solver_can_calculate_cumulative_pressure_drop(provide_lines):
     initial_dp_total = entry_fluid.dp_total
     assert initial_dp_total == 0
     fluid = provide_lines[0].run()
-    assert fluid.dp_total > 0.0005
+    assert 0.0007 < fluid.dp_total < 0.0008
 
 
 def test_csv_file_contains_data_with_units(provide_lines):

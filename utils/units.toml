@@ -3,6 +3,7 @@ bell_l = 'm'
 flow = "kg/s"
 pressure = "bar(a)"
 dp = "mbar"
+dp_total = "mbar"
 temperature = "K"
 density = "kg/m3"
 #viscosity = "Pa s"

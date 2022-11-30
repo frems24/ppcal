@@ -1,8 +1,8 @@
-from typing import Callable
 from dataclasses import dataclass, field
+from typing import Callable
+from pathlib import Path
 import tomli
 import json
-from pathlib import Path
 
 from .fluids import Fluid
 import settings

@@ -27,6 +27,7 @@ def write_data_row(dev: Device, fl: Fluid) -> dict:
     row['flow'] = round(fl.flow, 4)
     row['pressure'] = round(fl.p, 6)
     row['dp'] = round(fl.dp * 1_000, 4)
+    row['dp_total'] = round(fl.dp_total * 1_000, 4)
     row['temperature'] = fl.temp
     row['density'] = round(fl.rho, 3)
     # row['viscosity'] = fl.mi
