@@ -34,6 +34,7 @@ class Solver:
             device.update_fluid(self.fluid)
             if isinstance(device, Tee):
                 self.outflows[device.position] = write_outflow_data(device, self.fluid)
+            self.fluid.dp_total += self.fluid.dp
             self.data.append(write_data_row(device, self.fluid))
 
         save_data(self.process_line_name, self.data)
