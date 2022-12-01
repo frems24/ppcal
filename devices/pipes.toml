@@ -19,6 +19,10 @@ diameter = 0.0545  # m
 name = "Pipe DN40"
 diameter = 40  # mm
 
+[DN25]
+name = "Pipe DN25"
+diameter = 0.026
+
 [DN20]
 name = "Pipe DN20"
 diameter = 0.02  # m  poprawić
