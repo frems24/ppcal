@@ -24,7 +24,7 @@ class Device:
     bell_l: float = 0           # Expansion bellows length, m (if applicable)
     number: int = field(init=False, default=1)  # Number of units (elbows only)
 
-    def get_fluid(self, props_engine):
+    def get_fluid(self, props_engine: str):
         pass
 
     def update_p(self, fluid):
