@@ -85,6 +85,7 @@ def test_branch_line(provide_lines):
 
 def test_omit_fluid_update(line_without_fluid_update):
     entry_fluid = line_without_fluid_update[0].initiate_fluid()
+    entry_fluid.update_fluid()
     initial_density = entry_fluid.rho
     fluid = line_without_fluid_update[0].run()
     assert fluid.rho == initial_density

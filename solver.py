@@ -11,11 +11,12 @@ from utils.data_io import (write_data_row, save_data,
 
 class Solver:
     """A class to calculating changes in fluid properties in the system line."""
-    def __init__(self, process_line: str, props_pkg: str = "coolprop"):
+    def __init__(self, process_line: str, props_pkg: str = "coolprop", update_fluid: bool = True):
         self.process_line_name: str = process_line
         self.props_pkg: str = props_pkg
         self.route: list[Device] = Scheme(self.process_line_name).make_route()
         self.fluid = None
+        self.update_fluid = update_fluid
         self.data: list[dict] = []
         self.outflows: dict = {}
 
@@ -28,10 +29,14 @@ class Solver:
         if len(self.route) == 0:
             raise RuntimeError(f"Empty scheme: '{self.process_line_name}'. Nothing to solve.")
         self.fluid = self.initiate_fluid()
+        if not self.update_fluid:
+            self.fluid.dp = 0
+            self.fluid.update_fluid()
         for device in self.route:
             device.update_p(self.fluid)
             device.update_temp(self.fluid)
-            device.update_fluid(self.fluid)
+            if self.update_fluid:
+                device.update_fluid(self.fluid)
             if isinstance(device, Tee):
                 self.outflows[device.position] = write_outflow_data(device, self.fluid)
             self.fluid.dp_total += self.fluid.dp
@@ -49,6 +54,7 @@ class Runner:
         self.system_name: str = system_name
         self.schemes_dir: str = ""
         self.engine: str = ""
+        self.update_fluid = True
         self.process_lines: list[Solver] = []
 
     def read_process_lines(self):
@@ -57,10 +63,13 @@ class Runner:
             system_description = tomli.load(fp)
         self.schemes_dir = system_description['schemes_dir']
         self.engine = system_description.get('engine', 'coolprop')
+        self.update_fluid = system_description.get('update_fluid', True)
         process_lines_order = system_description['process_lines_order']
 
         for process_line_name in process_lines_order:
-            line = Solver(process_line=f"{self.schemes_dir}/{process_line_name}", props_pkg=self.engine)
+            line = Solver(process_line=f"{self.schemes_dir}/{process_line_name}",
+                          props_pkg=self.engine,
+                          update_fluid=self.update_fluid)
             self.process_lines.append(line)
 
     def execute(self, verbose=False):

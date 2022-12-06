@@ -1,0 +1,31 @@
+# Scheme file
+# 4.5 K helium supply main line
+
+[START]  # Position
+    device = "Source"
+    from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
+    entry = "f-TTL-Start"  # Entry position name
+[ITL-HWR]
+    device = "Pipe"
+    type = "DN50"
+    length = 2.424  # m
+[HWR]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108  # kg/s
+[HWR-ELB1]
+    device = "Pipe"
+    type = "DN50"
+    length = 1.2  # m
+    bell_l = 0.35  # m  Expansion bellows length
+[ELB1]
+    device = "Elbow"
+    type = "DN50"
+[ELB2-4]
+    device = "Elbow"
+    type = "DN50"
+    number = 3
+[ELB1-SSR1_1]
+    device = "Pipe"
+    type = "DN50"
+    length = 1.2  # m
