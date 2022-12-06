@@ -12,6 +12,14 @@ def provide_lines():
     return r.process_lines
 
 
+@pytest.fixture(scope="function")
+def line_without_fluid_update():
+    system_name = "sys/test_omit_fluid_update.toml"
+    r = Runner(system_name)
+    r.read_process_lines()
+    return r.process_lines
+
+
 def test_runner_can_make_system_to_solve(provide_lines):
     assert len(provide_lines) == 3
     assert provide_lines[0].process_line_name == "test/main-supply"
@@ -73,3 +81,10 @@ def test_branch_line(provide_lines):
     fluid = s2.run()
     assert s2.route[2].name == "Valve DN15"
     assert fluid.flow == 0.0108
+
+
+def test_omit_fluid_update(line_without_fluid_update):
+    entry_fluid = line_without_fluid_update[0].initiate_fluid()
+    initial_density = entry_fluid.rho
+    fluid = line_without_fluid_update[0].run()
+    assert fluid.rho == initial_density
