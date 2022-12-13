@@ -30,7 +30,7 @@ class Solver:
             raise RuntimeError(f"Empty scheme: '{self.process_line_name}'. Nothing to solve.")
         self.fluid = self.initiate_fluid()
         if not self.update_fluid:
-            self.fluid.dp = 0
+            self.fluid.dp = 0.0
             self.fluid.update_fluid()
         for device in self.route:
             device.update_p(self.fluid)
@@ -38,6 +38,7 @@ class Solver:
             if self.update_fluid:
                 device.update_fluid(self.fluid)
             if isinstance(device, Tee):
+                device.update_mass_flow(self.fluid)
                 self.outflows[device.position] = write_outflow_data(device, self.fluid)
             self.fluid.dp_total += self.fluid.dp
             self.data.append(write_data_row(device, self.fluid))

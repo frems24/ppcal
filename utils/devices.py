@@ -126,8 +126,10 @@ class Tee(Device):
     def update_temp(self, fluid):
         self.outflow_temp = fluid.temp
 
-    def update_fluid(self, fluid):
+    def update_mass_flow(self, fluid):
         fluid.flow -= self.outflow_m
+
+    def update_fluid(self, fluid):
         fluid.update_fluid()
 
 
