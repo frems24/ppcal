@@ -1,5 +1,6 @@
 import sys
 import tomli
+from copy import deepcopy
 
 from settings import BASE_DIR
 from utils.system import Scheme
@@ -16,6 +17,7 @@ class Solver:
         self.engine = engine
         self.route: list[Device] = Scheme(self.process_line_name).make_route()
         self.fluid = None
+        self.branched_fluid = None
         self.update_fluid = update_fluid
         self.data: list[dict] = []
         self.outflows: dict = {}
@@ -29,17 +31,21 @@ class Solver:
         if len(self.route) == 0:
             raise RuntimeError(f"Empty scheme: '{self.process_line_name}'. Nothing to solve.")
         self.fluid = self.initiate_fluid()
-        if not self.update_fluid:
-            self.fluid.dp = 0.0
-            self.engine.update_fluid_props(self.fluid)
+        self.engine.update_fluid_props(self.fluid)
+
         for device in self.route:
+            if isinstance(device, Tee):
+                self.branched_fluid = deepcopy(self.fluid)
+                self.fluid.flow -= device.outflow_m
+                self.branched_fluid.flow = device.outflow_m
+                device.update_branched_p(self.branched_fluid)
+                device.update_branched_temp(self.branched_fluid)
+                self.outflows[device.position] = write_outflow_data(self.branched_fluid)
+
             device.update_p(self.fluid)
             device.update_temp(self.fluid)
             if self.update_fluid:
                 self.engine.update_fluid_props(self.fluid)
-            if isinstance(device, Tee):
-                device.update_mass_flow(self.fluid)
-                self.outflows[device.position] = write_outflow_data(device, self.fluid)
             self.fluid.dp_total += self.fluid.dp
             self.data.append(write_data_row(device, self.fluid))
 
@@ -76,7 +82,8 @@ class Runner:
             from utils import hepak
             self.engine = hepak
         else:
-            raise ValueError("Only 'CoolProp' or 'HePak' are allowed to calculate fluid properties.")
+            raise ValueError("Only 'CoolProp' or 'HePak' are allowed "
+                             "to calculate fluid properties.")
 
         for process_line_name in process_lines_order:
             line = Solver(process_line=f"{self.schemes_dir}/{process_line_name}",

@@ -94,8 +94,6 @@ class Tee(Device):
     outflow_m: float = None  # Mass stream outflow branched connection
     diameter: float = field(init=False, default=None)  # Internal diameter, m
     epsilon: float = field(init=False, default=None)   # Roughness, m
-    outflow_p: float = field(init=False, default=None)  # Outflow pressure, bar(a)
-    outflow_temp: float = field(init=False, default=None)  # Outflow temp, K
 
     def __post_init__(self):
         self.epsilon = settings.ROUGHNESS
@@ -106,17 +104,20 @@ class Tee(Device):
         self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        initial_fluid_p = fluid.p
         fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
-        outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
-        fluid.p = self.calculate(initial_fluid_p, fluid.dp)
-        self.outflow_p = self.calculate(initial_fluid_p, outflow_dp)
+        new_p = self.calculate(fluid.p, fluid.dp)
+        fluid.p = new_p
+
+    def update_branched_p(self, branched_fluid):
+        branched_fluid.dp = eq.local_pressure_drop(self, branched_fluid, "tee-branched")
+        new_p = self.calculate(branched_fluid.p, branched_fluid.dp)
+        branched_fluid.p = new_p
 
     def update_temp(self, fluid):
-        self.outflow_temp = fluid.temp
+        pass
 
-    def update_mass_flow(self, fluid):
-        fluid.flow -= self.outflow_m
+    def update_branched_temp(self, fluid):
+        pass
 
 
 @dataclass
