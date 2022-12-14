@@ -49,7 +49,6 @@ def test_solver_uses_fluid_from_source(provide_lines):
     fluid = process_line.run()
     assert fluid.p < initial_p
     assert fluid.fluid_name == "He"
-    assert fluid.props_pkg == "coolprop"
 
 
 def test_solver_can_calculate_cumulative_pressure_drop(provide_lines):
@@ -85,7 +84,7 @@ def test_branch_line(provide_lines):
 
 def test_omit_fluid_update(line_without_fluid_update):
     entry_fluid = line_without_fluid_update[0].initiate_fluid()
-    entry_fluid.update_fluid()
+    line_without_fluid_update[0].engine.update_fluid_props(entry_fluid)
     initial_density = entry_fluid.rho
     fluid = line_without_fluid_update[0].run()
     assert fluid.rho == initial_density

@@ -24,16 +24,13 @@ class Device:
     bell_l: float = 0           # Expansion bellows length, m (if applicable)
     number: int = field(init=False, default=1)  # Number of units (elbows only)
 
-    def get_fluid(self, props_engine: str):
+    def get_fluid(self):
         pass
 
     def update_p(self, fluid):
         raise NotImplementedError
 
     def update_temp(self, fluid):
-        raise NotImplementedError
-
-    def update_fluid(self, fluid):
         raise NotImplementedError
 
 
@@ -45,7 +42,7 @@ class Source(Device):
     def __post_init__(self):
         self.name = "Source"
 
-    def get_fluid(self, props_engine) -> Fluid:
+    def get_fluid(self) -> Fluid:
         if self.from_line == "root":  # From very beginning of the whole system
             if self.entry[:2] != "f-":
                 raise ValueError("Name of fluid description file should start with 'f-'.")
@@ -58,7 +55,6 @@ class Source(Device):
                     fluid_description = json.load(fp)[self.entry]
             except FileNotFoundError:
                 raise FileNotFoundError("Origin line should be run first.")
-        fluid_description['props_pkg'] = props_engine
         return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure
@@ -66,10 +62,6 @@ class Source(Device):
 
     def update_temp(self, fluid):  # Source doesn't updates temperature
         pass
-
-    def update_fluid(self, fluid):
-        fluid.dp = 0.0
-        fluid.update_fluid()
 
 
 @dataclass
@@ -96,17 +88,12 @@ class Pipe(Device):
     def update_temp(self, fluid):
         pass
 
-    def update_fluid(self, fluid):
-        fluid.update_fluid()
-
 
 @dataclass
 class Tee(Device):
     outflow_m: float = None  # Mass stream outflow branched connection
     diameter: float = field(init=False, default=None)  # Internal diameter, m
     epsilon: float = field(init=False, default=None)   # Roughness, m
-    outflow_p: float = field(init=False, default=None)  # Outflow pressure, bar(a)
-    outflow_temp: float = field(init=False, default=None)  # Outflow temp, K
 
     def __post_init__(self):
         self.epsilon = settings.ROUGHNESS
@@ -117,20 +104,20 @@ class Tee(Device):
         self.diameter = devices[self.type]['diameter']
 
     def update_p(self, fluid):
-        initial_fluid_p = fluid.p
         fluid.dp = eq.local_pressure_drop(self, fluid, "tee-straight")
-        outflow_dp = eq.local_pressure_drop(self, fluid, "tee-branched")
-        fluid.p = self.calculate(initial_fluid_p, fluid.dp)
-        self.outflow_p = self.calculate(initial_fluid_p, outflow_dp)
+        new_p = self.calculate(fluid.p, fluid.dp)
+        fluid.p = new_p
+
+    def update_branched_p(self, branched_fluid):
+        branched_fluid.dp = eq.local_pressure_drop(self, branched_fluid, "tee-branched")
+        new_p = self.calculate(branched_fluid.p, branched_fluid.dp)
+        branched_fluid.p = new_p
 
     def update_temp(self, fluid):
-        self.outflow_temp = fluid.temp
+        pass
 
-    def update_mass_flow(self, fluid):
-        fluid.flow -= self.outflow_m
-
-    def update_fluid(self, fluid):
-        fluid.update_fluid()
+    def update_branched_temp(self, fluid):
+        pass
 
 
 @dataclass
@@ -155,9 +142,6 @@ class Elbow(Device):
     def update_temp(self, fluid):
         pass
 
-    def update_fluid(self, fluid):
-        fluid.update_fluid()
-
 
 @dataclass
 class Valve(Device):
@@ -181,6 +165,3 @@ class Valve(Device):
 
     def update_temp(self, fluid):
         pass
-
-    def update_fluid(self, fluid):
-        fluid.update_fluid()

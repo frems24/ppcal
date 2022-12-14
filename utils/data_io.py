@@ -2,7 +2,7 @@ import csv
 import tomli
 import json
 
-from .devices import Device, Tee
+from .devices import Device
 from .fluids import Fluid
 from settings import BASE_DIR, RESULTS, SYSTEMS_DIR
 
@@ -57,12 +57,12 @@ def save_data(process_name: str, data: list[dict]) -> None:
         writer.writerows(data)
 
 
-def write_outflow_data(dev: Tee, fl: Fluid) -> dict:
+def write_outflow_data(outflow_fl: Fluid) -> dict:
     outflow_data = dict()
-    outflow_data['fluid_name'] = fl.fluid_name
-    outflow_data['p'] = dev.outflow_p
-    outflow_data['temp'] = dev.outflow_temp
-    outflow_data['flow'] = dev.outflow_m
+    outflow_data['fluid_name'] = outflow_fl.fluid_name
+    outflow_data['p'] = outflow_fl.p
+    outflow_data['temp'] = outflow_fl.temp
+    outflow_data['flow'] = outflow_fl.flow
     return outflow_data
 
 
