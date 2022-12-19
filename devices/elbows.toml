@@ -1,3 +1,7 @@
+[DN25]
+name = "Elbow DN25"
+diameter = 0.03  # m
+
 [DN50]
 name = "Elbow DN50"
 diameter = 0.0545  # m

@@ -1,0 +1,248 @@
+# Scheme file
+# 4.5 K helium supply main line
+
+[START]  # Position
+    device = "Source"
+    from_line = "root"   # Get fluid from other line name (from the very beginning if 'root')
+    entry = "f-TTL-sup-4_5-K"  # Entry position name
+[ITL-HWR]
+    device = "Pipe"
+    type = "DN50"
+    length = 2.424  # m
+[HWR]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0075  # kg/s
+[HWR-SSR1_1]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.571  # m
+    bell_l = 0.4  # m  Expansion bellows length
+[SSR1_1]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0044
+[SSR1_1-SSR1_2]
+    device = "Pipe"
+    type = "DN50"
+    length = 5.981
+    bell_l = 0.4
+[SSR1_2]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0044
+[SSR1_2-SSR2_1]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.653
+    bell_l = 0.4
+[SSR2_1]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_1-SSR2_2]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_2]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_2-SSR2_3]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_3]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_3-SSR2_4]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_4]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_4-SSR2_5]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_5]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_5-SSR2_6]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_6]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_6-SSR2_7]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.95
+    bell_l = 0.4
+[SSR2_7]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0051
+[SSR2_7-LB1]
+    device = "Pipe"
+    type = "DN50"
+    length = 8.078
+    bell_l = 0.4
+[LB1]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB1-LB2]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB2]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB2-LB3]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB3]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB3-LB4]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB4]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB4-LB5]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB5]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB5-LB6]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB6]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB6-LB7]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB7]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB7-LB8]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB8]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB8-LB9]
+    device = "Pipe"
+    type = "DN50"
+    length = 6.824
+    bell_l = 0.4
+[LB9]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.006
+[LB9-HB1]
+    device = "Pipe"
+    type = "DN50"
+    length = 8.874
+    bell_l = 0.4
+[HB1]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB1-HB2]
+    device = "Pipe"
+    type = "DN50"
+    length = 11.22
+    bell_l = 0.4
+[HB2]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB2-HB3]
+    device = "Pipe"
+    type = "DN50"
+    length = 11.22
+    bell_l = 0.4
+[HB3]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB3-HB4]
+    device = "Pipe"
+    type = "DN50"
+    length = 11.22
+    bell_l = 0.4
+[HB4]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB4-HB5]
+    device = "Pipe"
+    type = "DN50"
+    length = 11.22
+    bell_l = 0.4
+[HB5]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB5-HB6]
+    device = "Pipe"
+    type = "DN50"
+    length = 11.22
+    bell_l = 0.4
+[HB6]
+    device = "Tee"
+    type = "DN50"
+    outflow_m = 0.0108
+[HB7-TC]
+    device = "Pipe"
+    type = "DN50"
+    length = 15.2
+    bell_l = 0.4
+[TC_ELBOW_DN50]
+    device = "Elbow"
+    type = "DN50"
+    number = 6
+[TC_PIPE_DN25]
+    device = "Pipe"
+    type = "DN25"
+    length = 2.0
+[TC_ELBOW_DN25]
+    device = "Elbow"
+    type = "DN25"
+    number = 6

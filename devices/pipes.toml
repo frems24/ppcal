@@ -1,31 +1,39 @@
-# Temporary values, required corrections
-[DN250]
-name = "Pipe DN250"
-diameter = 250  # mm
+# Pipes inner diameter
+[DN10]
+name = "Pipe DN10"
+diameter = 0.01
 
-[DN80]
-name = "Pipe DN80"
-diameter = 80  # mm
+[DN15]
+name = "Pipe DN15"
+diameter = 0.018
 
-[DN65]
-name = "Pipe DN65"
-diameter = 65  # mm
+[DN20]
+name = "Pipe DN20"
+diameter = 0.02
 
-[DN50]
-name = "Pipe DN50"
-diameter = 0.0545  # m
+[DN25]
+name = "Pipe DN25"
+diameter = 0.03
 
 [DN40]
 name = "Pipe DN40"
 diameter = 40  # mm
 
-[DN20]
-name = "Pipe DN20"
-diameter = 0.02  # m  poprawić
+[DN50]
+name = "Pipe DN50"
+diameter = 0.0545  # m
 
-[DN15]
-name = "Pipe DN15"
-diameter = 0.018
+[DN65]
+name = "Pipe DN65"
+diameter = 65  # mm
+
+[DN80]
+name = "Pipe DN80"
+diameter = 80  # mm
+
+[DN250]
+name = "Pipe DN250"
+diameter = 250  # mm
 
 [ManiL]
 name = "Pipe Manifold L"
