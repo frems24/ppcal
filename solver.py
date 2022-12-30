@@ -11,29 +11,47 @@ from utils.data_io import (write_data_row, save_data,
 
 
 class Solver:
-    """A class to calculating changes in fluid properties in the system line."""
+    """
+    A class to calculate fluid parameters in the process line.
+    """
     def __init__(self, process_line: str, engine, update_fluid: bool = True):
         self.process_line_name: str = process_line
         self.engine = engine
-        self.route: list[Device] = Scheme(self.process_line_name).make_route()
+        self.route: list[Device] = []
         self.fluid = None
         self.branched_fluid = None
         self.update_fluid = update_fluid
         self.data: list[dict] = []
         self.outflows: dict = {}
 
-    def initiate_fluid(self) -> Fluid:
+        self.initiate_route()
+
+    def initiate_route(self):
+        """
+        Initiate a list of particular Device instances read from process line description file.
+        """
+        self.route = Scheme(self.process_line_name).make_route()
+
+    def get_fluid(self) -> Fluid:
+        """
+        Get fluid instance from source device (very beginning of the process line or outflow from tee).
+        :return: Fluid instance
+        """
         source = self.route[0]
         return source.get_fluid()
 
     def run(self):
-        """Method to perform calculations and get fluid instance at the end of system line."""
+        """
+        Perform calculations and update fluid properties in current process line.
+        :return: Calculated fluid instance at the end of process line (for testing purposes only).
+        """
         if len(self.route) == 0:
             raise RuntimeError(f"Empty scheme: '{self.process_line_name}'. Nothing to solve.")
-        self.fluid = self.initiate_fluid()
+        self.fluid = self.get_fluid()
         self.engine.update_fluid_props(self.fluid)
 
         for device in self.route:
+            # In a Tee update main and branched mass flow and calculate branched properties
             if isinstance(device, Tee):
                 self.branched_fluid = deepcopy(self.fluid)
                 self.fluid.flow -= device.outflow_m
@@ -42,6 +60,7 @@ class Solver:
                 device.update_branched_temp(self.branched_fluid)
                 self.outflows[device.position] = write_outflow_data(self.branched_fluid)
 
+            # Calculate main flow properties in all devices
             device.update_p(self.fluid)
             device.update_temp(self.fluid)
             if self.update_fluid:
@@ -49,23 +68,28 @@ class Solver:
             self.fluid.dp_total += self.fluid.dp
             self.data.append(write_data_row(device, self.fluid))
 
+        # Save to disk fluid properties in each device and outflow data from each Tee device
         save_data(self.process_line_name, self.data)
         if self.outflows:
             save_outflows_scheme(self.process_line_name, self.outflows)
+
         return self.fluid
 
 
 class Runner:
     """A class to organize entire system and run calculations for every process line."""
     def __init__(self, system_name: str):
-        self.system_name: str = system_name
-        self.schemes_dir: str = ""
-        self.props_pkg: str = ""
-        self.engine = None  # fluid properties calculation module
-        self.update_fluid = True
-        self.process_lines: list[Solver] = []
+        self.system_name: str = system_name    # name of system description file
+        self.schemes_dir: str = ""             # name of the folder with process lines descriptions
+        self.props_pkg: str = ""               # fluid properties calculation package name
+        self.engine = None                     # fluid properties calculation module
+        self.update_fluid = True               # if true, recalculate fluid properties in every device
+        self.process_lines: list[Solver] = []  # a list with all process lines description
 
     def read_process_lines(self):
+        """
+        Read system description file and form a list with Solver instances for each process line.
+        """
         filename = BASE_DIR / self.system_name
         with open(filename, 'rb') as fp:
             system_description = tomli.load(fp)
@@ -92,11 +116,15 @@ class Runner:
             self.process_lines.append(line)
 
     def execute(self, verbose=False):
+        """
+        Get a list with all process lines and run calculations for each of them.
+        :param verbose: If True, print progres status for each process line.
+        """
         self.read_process_lines()
-        for line in self.process_lines:
-            line.run()
+        for process_line in self.process_lines:
+            process_line.run()
             if verbose:
-                print(f"{line.process_line_name}.. Done")
+                print(f"{process_line.process_line_name}.. Done")
 
 
 if __name__ == "__main__":

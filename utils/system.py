@@ -9,7 +9,7 @@ class Scheme:
     """Scheme of the whole system."""
     def __init__(self, process_line: str):
         self.process_line = process_line
-        self.route = []
+        self.route: list[devices.Device] = []
 
     def make_route(self):
         """Make a list of devices connected together in the system."""

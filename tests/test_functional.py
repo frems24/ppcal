@@ -20,7 +20,7 @@ def test_solver_can_compute_dp(provide_lines):
 
 def test_solver_can_compute_fluid_props(provide_lines):
     s = provide_lines[0]
-    start_fluid = s.initiate_fluid()
+    start_fluid = s.get_fluid()
     coolprop.update_fluid_props(start_fluid)
     start_fluid_rho = start_fluid.rho
     end_fluid = s.run()
@@ -29,7 +29,7 @@ def test_solver_can_compute_fluid_props(provide_lines):
 
 def test_reversed_route(provide_lines):
     s = provide_lines[2]
-    start_fluid = s.initiate_fluid()
+    start_fluid = s.get_fluid()
     coolprop.update_fluid_props(start_fluid)
     start_fluid_p = start_fluid.p
     end_fluid = s.run()

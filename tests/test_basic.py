@@ -41,7 +41,7 @@ def test_solver_can_make_route_from_shape(provide_lines):
 
 
 def test_solver_uses_fluid_from_source(provide_lines):
-    entry_fluid = provide_lines[0].initiate_fluid()
+    entry_fluid = provide_lines[0].get_fluid()
     initial_p = entry_fluid.p
     assert initial_p == 2.9
     process_line = provide_lines[0]
@@ -52,7 +52,7 @@ def test_solver_uses_fluid_from_source(provide_lines):
 
 
 def test_solver_can_calculate_cumulative_pressure_drop(provide_lines):
-    entry_fluid = provide_lines[0].initiate_fluid()
+    entry_fluid = provide_lines[0].get_fluid()
     initial_dp_total = entry_fluid.dp_total
     assert initial_dp_total == 0
     fluid = provide_lines[0].run()
@@ -83,7 +83,7 @@ def test_branch_line(provide_lines):
 
 
 def test_omit_fluid_update(line_without_fluid_update):
-    entry_fluid = line_without_fluid_update[0].initiate_fluid()
+    entry_fluid = line_without_fluid_update[0].get_fluid()
     line_without_fluid_update[0].engine.update_fluid_props(entry_fluid)
     initial_density = entry_fluid.rho
     fluid = line_without_fluid_update[0].run()
