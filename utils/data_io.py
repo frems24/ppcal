@@ -58,6 +58,11 @@ def save_data(process_name: str, data: list[dict]) -> None:
 
 
 def write_outflow_data(outflow_fl: Fluid) -> dict:
+    """
+    Write actual Tee outflow parameters in data dictionary.
+    :param outflow_fl: Actual branched Fluid instance
+    :return: Branched fluid parameters in Tee outflow
+    """
     outflow_data = dict()
     outflow_data['fluid_name'] = outflow_fl.fluid_name
     outflow_data['p'] = outflow_fl.p
@@ -67,6 +72,11 @@ def write_outflow_data(outflow_fl: Fluid) -> dict:
 
 
 def save_outflows_scheme(process_name: str, outflows: dict) -> None:
+    """
+    Save branched fluids parameters from each Tee outflow in json file.
+    :param process_name: Name of file
+    :param outflows: Actual data to write in
+    """
     with open(SYSTEMS_DIR / f"{process_name}.json", 'w') as fp:
         json.dump(outflows, fp)
 

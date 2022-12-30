@@ -43,18 +43,24 @@ class Source(Device):
         self.name = "Source"
 
     def get_fluid(self) -> Fluid:
-        if self.from_line == "root":  # From very beginning of the whole system
+        """
+        Get fluid instance from fluid file or from tee outflow.
+        :return: Fluid instance
+        """
+        if self.from_line == "root":  # From very beginning of the process line
             if self.entry[:2] != "f-":
                 raise ValueError("Name of fluid description file should start with 'f-'.")
             filename = self.line_filename.parent / f"{self.entry}.toml"
             with open(filename, "rb") as fp:
                 fluid_description = tomli.load(fp)
-        else:                         # From tee
+        else:  # From tee outflow
             try:
                 with open(self.line_filename.parent / f"{self.from_line}.json", "r") as fp:
                     fluid_description = json.load(fp)[self.entry]
             except FileNotFoundError:
-                raise FileNotFoundError("Origin line should be run first.")
+                print("Origin line should be run first.")
+                raise
+
         return Fluid(**fluid_description)
 
     def update_p(self, fluid):     # Source doesn't updates pressure
