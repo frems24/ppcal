@@ -4,9 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-jupyterlab = "*"
 coolprop = "*"
-matplotlib = "*"
 sympy = "*"
 
 [dev-packages]
