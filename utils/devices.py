@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Callable
 from pathlib import Path
-import tomli
+import tomllib
 import json
 
 from .fluids import Fluid
@@ -52,7 +52,7 @@ class Source(Device):
                 raise ValueError("Name of fluid description file should start with 'f-'.")
             filename = self.line_filename.parent / f"{self.entry}.toml"
             with open(filename, "rb") as fp:
-                fluid_description = tomli.load(fp)
+                fluid_description = tomllib.load(fp)
         else:  # From tee outflow
             try:
                 with open(self.line_filename.parent / f"{self.from_line}.json", "r") as fp:
@@ -79,7 +79,7 @@ class Pipe(Device):
         self.epsilon = settings.ROUGHNESS
         filename = DEVICES_DIR / "pipes.toml"
         with open(filename, "rb") as fp:
-            devices = tomli.load(fp)
+            devices = tomllib.load(fp)
         self.name = devices[self.type]['name']
         self.diameter = devices[self.type]['diameter']
         if self.bell_l > 0:
@@ -105,7 +105,7 @@ class Tee(Device):
         self.epsilon = settings.ROUGHNESS
         filename = DEVICES_DIR / "tees.toml"
         with open(filename, "rb") as fp:
-            devices = tomli.load(fp)
+            devices = tomllib.load(fp)
         self.name = devices[self.type]['name']
         self.diameter = devices[self.type]['diameter']
 
@@ -136,7 +136,7 @@ class Elbow(Device):
         self.epsilon = settings.ROUGHNESS
         filename = DEVICES_DIR / "elbows.toml"
         with open(filename, "rb") as fp:
-            devices = tomli.load(fp)
+            devices = tomllib.load(fp)
         self.name = devices[self.type]['name']
         self.diameter = devices[self.type]['diameter']
 
@@ -160,7 +160,7 @@ class Valve(Device):
         self.xt = settings.X_T
         filename = DEVICES_DIR / "valves.toml"
         with open(filename, "rb") as fp:
-            valves = tomli.load(fp)
+            valves = tomllib.load(fp)
         self.name = valves[self.type]['name']
         self.kv = valves[self.type]['kv'] * settings.VALVE_OPENING
 

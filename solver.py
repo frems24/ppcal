@@ -1,5 +1,5 @@
 import sys
-import tomli
+import tomllib
 from copy import deepcopy
 
 from settings import BASE_DIR
@@ -92,7 +92,7 @@ class Runner:
         """
         filename = BASE_DIR / self.system_name
         with open(filename, 'rb') as fp:
-            system_description = tomli.load(fp)
+            system_description = tomllib.load(fp)
 
         self.schemes_dir = system_description['schemes_dir']
         self.props_pkg = system_description.get('engine', 'coolprop')

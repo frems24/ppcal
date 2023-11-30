@@ -1,5 +1,5 @@
 import csv
-import tomli
+import tomllib
 import json
 
 from .devices import Device
@@ -42,7 +42,7 @@ def save_data(process_name: str, data: list[dict]) -> None:
     """
     try:
         with open(BASE_DIR / "utils" / "units.toml", "rb") as fp:
-            units = tomli.load(fp)
+            units = tomllib.load(fp)
     except FileNotFoundError:
         units = {}
 

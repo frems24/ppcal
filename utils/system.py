@@ -1,4 +1,4 @@
-import tomli
+import tomllib
 from operator import add, sub
 
 from settings import SYSTEMS_DIR
@@ -20,7 +20,7 @@ class Scheme:
         """
         filename = SYSTEMS_DIR / f"{self.process_line}.toml"
         with open(filename, mode="rb") as fp:
-            scheme_toml = tomli.load(fp)
+            scheme_toml = tomllib.load(fp)
 
         # List of all device types in process line
         positions = list(scheme_toml)
