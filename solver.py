@@ -128,5 +128,9 @@ class Runner:
 
 
 if __name__ == "__main__":
-    r = Runner(sys.argv[1])
-    r.execute(verbose=True)
+    if len(sys.argv) < 2:
+        print("Please provide system filename (sys/...)")
+        sys.exit()
+    else:
+        r = Runner(sys.argv[1])
+        r.execute(verbose=True)
