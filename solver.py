@@ -87,17 +87,35 @@ class Runner:
         self.process_lines: list[Solver] = []  # a list with all process lines description
 
     def read_process_lines(self):
-        """
-        Read system description file and form a list with Solver instances for each process line.
-        """
+        """Read system description file and form a list with Solver instances for each process line."""
         filename = BASE_DIR / self.system_name
-        with open(filename, 'rb') as fp:
-            system_description = tomllib.load(fp)
+        try:
+            with open(filename, 'rb') as fp:
+                system_description = tomllib.load(fp)
+        except FileNotFoundError as e:
+            print(f"File Not Found Error: {filename}")
+            sys.exit()
 
-        self.schemes_dir = system_description['schemes_dir']
+        try:
+            self.schemes_dir = system_description['schemes_dir']
+        except KeyError as e:
+            print(f"{e!r}. You should provide name of directory containing system description in schemes_dir section.")
+            sys.exit()
+
+        try:
+            process_lines_order = system_description['process_lines_order']
+        except KeyError as e:
+            print(f"{e!r}. You should complete a process_lines_order section.")
+            sys.exit()
+
+        if not isinstance(process_lines_order, list):
+            print("process_lines_order section should be a list")
+            sys.exit()
+        elif len(process_lines_order) == 0:
+            print("Empty process_lines_order section. Nothing to compute.")
+
         self.props_pkg = system_description.get('engine', 'coolprop')
         self.update_fluid = system_description.get('update_fluid', True)
-        process_lines_order = system_description['process_lines_order']
 
         if self.props_pkg == "coolprop":
             from utils import coolprop
